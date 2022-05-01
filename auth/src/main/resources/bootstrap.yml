@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: auth
+  profiles:
+    active: default
+  cloud:
+    config:
+      uri: ${vcap.services.configserver.credentials.uri:http://localhost:8888/auth}

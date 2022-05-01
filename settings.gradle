@@ -1,0 +1,12 @@
+rootProject.name = 'open-help-backend'
+
+includeBuild 'eureka-server'
+includeBuild 'config-server'
+includeBuild 'auth'
+includeBuild 'sos'
+includeBuild 'story'
+includeBuild 'group-event'
+includeBuild 'dictionary'
+includeBuild 'notification'
+includeBuild 'message'
+includeBuild 'api-gateway'
