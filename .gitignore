@@ -1,6 +1,7 @@
 .gradle/*
 .idea/*
 gradle/*
+logs/*
 
 api-gateway/build/*
 api-gateway/gradle/*
