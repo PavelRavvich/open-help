@@ -3,46 +3,57 @@
 gradle/*
 logs/*
 
+api-gateway/logs/*
 api-gateway/build/*
 api-gateway/gradle/*
 api-gateway/.gradle/*
 
+auth/logs/*
 auth/build/*
 auth/gradle/*
 auth/.gradle/*
 
+mail/logs/*
 mail/build/*
 mail/gradle/*
 mail/.gradle/*
 
+dictionary/logs/*
 dictionary/build/*
 dictionary/gradle/*
 dictionary/.gradle/*
 
+config-server/logs/*
 config-server/build/*
 config-server/gradle/*
 config-server/.gradle/*
 
+eureka-server/logs/*
 eureka-server/build/*
 eureka-server/gradle/*
 eureka-server/.gradle/*
 
+group-event/logs/*
 group-event/build/*
 group-event/gradle/*
 group-event/.gradle/*
 
+message/logs/*
 message/build/*
 message/gradle/*
 message/.gradle/*
 
+notification/logs/*
 notification/build/*
 notification/gradle/*
 notification/.gradle/*
 
+sos/logs/*
 sos/build/*
 sos/gradle/*
 sos/.gradle/*
 
+story/logs/*
 story/build/*
 story/gradle/*
 story/.gradle/*
