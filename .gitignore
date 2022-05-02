@@ -10,6 +10,10 @@ auth/build/*
 auth/gradle/*
 auth/.gradle/*
 
+mail/build/*
+mail/gradle/*
+mail/.gradle/*
+
 dictionary/build/*
 dictionary/gradle/*
 dictionary/.gradle/*
