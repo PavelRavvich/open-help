@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author Pavel Ravvich.
@@ -43,6 +44,9 @@ public class Story {
     @Column(name = "closed_at")
     private Timestamp closedAt;
 
+    @Column(name = "deleted_at")
+    private Timestamp deletedAt;
+
     @Column(name = "author_id")
     private Long authorId;
 
@@ -54,4 +58,46 @@ public class Story {
 
     @Column(name = "target_location_id")
     private Long targetLocationId;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy="story", fetch = FetchType.LAZY)
+    private List<Task> tasks;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Story story = (Story) o;
+
+        if (!id.equals(story.id)) return false;
+        if (!title.equals(story.title)) return false;
+        if (!type.equals(story.type)) return false;
+        if (!status.equals(story.status)) return false;
+        if (!description.equals(story.description)) return false;
+        if (!createdAt.equals(story.createdAt)) return false;
+        if (!updatedAt.equals(story.updatedAt)) return false;
+        if (!closedAt.equals(story.closedAt)) return false;
+        if (!authorId.equals(story.authorId)) return false;
+        if (!currentLocationId.equals(story.currentLocationId)) return false;
+        if (!exodusLocationId.equals(story.exodusLocationId)) return false;
+        return targetLocationId.equals(story.targetLocationId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + type.hashCode();
+        result = 31 * result + status.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + createdAt.hashCode();
+        result = 31 * result + updatedAt.hashCode();
+        result = 31 * result + closedAt.hashCode();
+        result = 31 * result + authorId.hashCode();
+        result = 31 * result + currentLocationId.hashCode();
+        result = 31 * result + exodusLocationId.hashCode();
+        result = 31 * result + targetLocationId.hashCode();
+        return result;
+    }
 }

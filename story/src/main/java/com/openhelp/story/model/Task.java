@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Table(name = "tasks")
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,6 +46,40 @@ public class Task {
     @Column(name = "executor_id")
     private Long executorId;
 
-    @Column(name = "story_id")
-    private Long storyId;
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "story_id")
+    private Story story;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Task task = (Task) o;
+
+        if (!id.equals(task.id)) return false;
+        if (!title.equals(task.title)) return false;
+        if (!status.equals(task.status)) return false;
+        if (!description.equals(task.description)) return false;
+        if (!createdAt.equals(task.createdAt)) return false;
+        if (!updatedAt.equals(task.updatedAt)) return false;
+        if (!closedAt.equals(task.closedAt)) return false;
+        if (!authorId.equals(task.authorId)) return false;
+        return executorId.equals(task.executorId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + status.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + createdAt.hashCode();
+        result = 31 * result + updatedAt.hashCode();
+        result = 31 * result + closedAt.hashCode();
+        result = 31 * result + authorId.hashCode();
+        result = 31 * result + executorId.hashCode();
+        return result;
+    }
 }

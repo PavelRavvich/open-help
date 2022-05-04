@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS stories
     created_at          TIMESTAMP     NOT NULL,
     updated_at          TIMESTAMP,
     closed_at           TIMESTAMP,
+    deleted_at          TIMESTAMP,
     author_id           BIGINT NOT NULL,
     current_location_id BIGINT NOT NULL,
     exodus_location_id  BIGINT NOT NULL,

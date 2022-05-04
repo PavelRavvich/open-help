@@ -23,8 +23,6 @@ ext {
 }
 
 dependencies {
-    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-    implementation 'org.flywaydb:flyway-core'
     implementation 'org.springframework.boot:spring-boot-starter-activemq'
     implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
     implementation 'org.springframework.cloud:spring-cloud-config-client'
@@ -33,6 +31,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    implementation 'org.jetbrains:annotations:20.1.0'
+    implementation 'org.flywaydb:flyway-core'
     implementation 'junit:junit:4.13.1'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

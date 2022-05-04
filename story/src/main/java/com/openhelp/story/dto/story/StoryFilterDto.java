@@ -1,9 +1,11 @@
-package com.openhelp.story.dto;
+package com.openhelp.story.dto.story;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.openhelp.story.dto.FilterDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -12,11 +14,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StoryDto {
-
-    @JsonProperty("id")
-    private Long id;
+public class StoryFilterDto extends FilterDto {
 
     @JsonProperty("title")
     private String title;
@@ -27,20 +27,29 @@ public class StoryDto {
     @JsonProperty("status")
     private String status;
 
-    @JsonProperty("description")
-    private String description;
+    @JsonProperty("createdFrom")
+    private Long createdFrom;
 
-    @JsonProperty("createdAt")
-    private Long createdAt;
+    @JsonProperty("createdTo")
+    private Long createdTo;
 
-    @JsonProperty("updatedAt")
-    private Long updatedAt;
+    @JsonProperty("updatedFrom")
+    private Long updatedFrom;
 
-    @JsonProperty("closedAt")
-    private Long closedAt;
+    @JsonProperty("updatedTo")
+    private Long updatedTo;
 
-    @JsonProperty("authorId")
-    private Long authorId;
+    @JsonProperty("closedFrom")
+    private Long closedFrom;
+
+    @JsonProperty("closedTo")
+    private Long closedTo;
+
+    @JsonProperty("deletedFrom")
+    private Long deletedFrom;
+
+    @JsonProperty("deletedTo")
+    private Long deletedTo;
 
     @JsonProperty("currentLocationId")
     private Long currentLocationId;
