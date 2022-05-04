@@ -59,9 +59,9 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
-    public Long create(@NotNull StoryDto dto) {
-        Long id = storyRepository.save(storyMapper.storyDtoToStory(dto)).getId();
-        log.info("Create story id: {}, {}", id, dto);
+    public Long create(@NotNull StoryDto storyDto) {
+        Long id = storyRepository.save(storyMapper.storyDtoToStory(storyDto)).getId();
+        log.info("Create story id: {}, {}", id, storyDto);
         return id;
     }
 

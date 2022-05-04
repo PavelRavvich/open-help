@@ -37,6 +37,9 @@ public class TaskDto {
     @JsonProperty("closedAt")
     private Long closedAt;
 
+    @JsonProperty("deletedAt")
+    private Long deletedAt;
+
     @JsonProperty("authorId")
     private Long authorId;
 

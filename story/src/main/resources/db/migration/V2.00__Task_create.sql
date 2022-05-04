@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS tasks
     created_at  TIMESTAMP     NOT NULL,
     updated_at  TIMESTAMP,
     closed_at   TIMESTAMP,
+    deleted_at  TIMESTAMP,
     author_id   BIGINT NOT NULL,
     executor_id BIGINT NOT NULL,
     story_id    BIGINT REFERENCES stories (id)

@@ -60,8 +60,8 @@ public interface StoryRepository
                     exps.add(builder.lessThanOrEqualTo(root.get("closedAt"), closedTo)));
             filter.getDeletedFrom().ifPresent(deletedFrom ->
                     exps.add(builder.greaterThanOrEqualTo(root.get("deletedAt"), deletedFrom)));
-            filter.getDeletedTo().ifPresent(deletedAt ->
-                    exps.add(builder.lessThanOrEqualTo(root.get("deletedAt"), deletedAt)));
+            filter.getDeletedTo().ifPresent(deletedTo ->
+                    exps.add(builder.lessThanOrEqualTo(root.get("deletedAt"), deletedTo)));
 
             return predicate;
         }

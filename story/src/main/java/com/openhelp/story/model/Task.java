@@ -40,6 +40,9 @@ public class Task {
     @Column(name = "closed_at")
     private Timestamp closedAt;
 
+    @Column(name = "deleted_at")
+    private Timestamp deletedAt;
+
     @Column(name = "author_id")
     private Long authorId;
 
