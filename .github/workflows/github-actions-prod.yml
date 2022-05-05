@@ -7,6 +7,8 @@ on:
       - 'story/**'
   pull_request:
     branches: [ prod, test, dev ]
+    paths:
+      - 'story/**'
 
 jobs:
   build-without-cache:
