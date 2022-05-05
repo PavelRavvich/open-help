@@ -1,9 +1,13 @@
 name: CI
+
 on:
   push:
     branches: [ prod, test, dev ]
+    paths:
+      - 'story/**'
   pull_request:
     branches: [ prod, test, dev ]
+
 jobs:
   build-without-cache:
     runs-on: ubuntu-latest
