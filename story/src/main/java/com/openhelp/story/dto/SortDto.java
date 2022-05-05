@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Sort.Direction;
 
 /**
  * @author Pavel Ravvich.
@@ -21,6 +22,6 @@ public class SortDto {
     private String active;
 
     @JsonProperty("direction")
-    private String direction;
+    private Direction direction;
 
 }

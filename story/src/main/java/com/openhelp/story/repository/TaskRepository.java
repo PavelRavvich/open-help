@@ -2,7 +2,7 @@ package com.openhelp.story.repository;
 
 import com.openhelp.story.model.Task;
 import com.openhelp.story.repository.filter.TaskFilter;
-import com.openhelp.story.utils.SqlUtils;
+import com.openhelp.story.utils.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,7 +38,7 @@ public interface TaskRepository
             List<Expression<Boolean>> exps = predicate.getExpressions();
 
             filter.getTitle().ifPresent(title ->
-                    exps.add(builder.like(builder.lower(root.get("title")), SqlUtils.toLikeLower(title))));
+                    exps.add(builder.like(builder.lower(root.get("title")), Utils.toLikeLower(title))));
             filter.getStory().ifPresent(story -> exps.add(builder.equal(root.join("story"), story)));
             filter.getStatus().ifPresent(status -> exps.add(builder.equal(root.get("status"), status)));
             filter.getType().ifPresent(type -> exps.add(builder.equal(root.get("type"), type)));

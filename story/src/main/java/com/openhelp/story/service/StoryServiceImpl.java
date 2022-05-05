@@ -8,6 +8,7 @@ import com.openhelp.story.model.Story;
 import com.openhelp.story.repository.StoryRepository;
 import com.openhelp.story.repository.StoryRepository.StorySpecification;
 import com.openhelp.story.repository.filter.StoryFilter;
+import com.openhelp.story.utils.Utils;
 import com.openhelp.story.validation.NoSuchStoryException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -34,7 +36,8 @@ public class StoryServiceImpl implements StoryService {
 
     @Override
     public ListDto<StoryDto> getList(@NotNull StoryFilterDto filterDto) {
-        Pageable pageable = PageRequest.of(filterDto.getPageNumber(), filterDto.getPageSize());
+        Pageable pageable = PageRequest.of(filterDto.getPageNumber(),
+                filterDto.getPageSize(), Utils.getSort(filterDto));
         StoryFilter filter = storyMapper.storyFilterDtoToStoryFilter(filterDto);
         Page<Story> page = storyRepository.findAll(
                 new StorySpecification(filter), pageable);
@@ -66,7 +69,11 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
+    @Transactional
     public Long update(@NotNull Long id, @NotNull StoryDto dto) {
+        if (!storyRepository.existsById(id)) {
+            throw new NoSuchStoryException();
+        }
         dto.setId(id);
         storyRepository.save(storyMapper.storyDtoToStory(dto));
         log.info("Update story id: {}, {}", id, dto);
@@ -74,7 +81,11 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
+    @Transactional
     public Long delete(@NotNull Long id) {
+        if (!storyRepository.existsById(id)) {
+            throw new NoSuchStoryException();
+        }
         storyRepository.updateDeletedAtById(id, new Timestamp(System.currentTimeMillis()));
         log.info("Delete story id: {}", id);
         return id;
