@@ -52,10 +52,6 @@ dependencyManagement {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '7.4.2'
-}
-
 tasks.named('test') {
     useJUnitPlatform()
 }
