@@ -3,9 +3,9 @@ name: CI/CD
 on:
   push:
     branches:
-      - prod
-      - test
-      - dev
+      - 'prod'
+      - 'test'
+      - 'dev'
     paths:
       - 'story/**'
   pull_request:
