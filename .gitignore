@@ -66,5 +66,4 @@ sos/.gradle/*
 story/logs/*
 story/logs-archive/*
 story/build/*
-story/gradle/*
 story/.gradle/*
