@@ -4,11 +4,11 @@ on:
   push:
     branches: [ prod, test, dev ]
     paths:
-      - 'story/**'
+      - './story/**'
   pull_request:
     branches: [ prod, test, dev ]
     paths:
-      - 'story/**'
+      - './story/**'
 
 jobs:
   build-without-cache:
