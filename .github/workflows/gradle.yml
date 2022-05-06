@@ -4,18 +4,17 @@ on:
   push:
     branches:
       - 'prod'
-    paths:
-      - 'story/**'
 
   workflow_dispatch:
     branches:
       - 'prod'
-    paths:
-      - 'story/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./story
 
     steps:
       - uses: actions/checkout@v3
