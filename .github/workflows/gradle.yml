@@ -9,9 +9,9 @@ on:
 
   workflow_dispatch:
     branches:
-        - 'prod'
-      paths:
-        - 'story/**'
+      - 'prod'
+    paths:
+      - 'story/**'
 
 jobs:
   build:
