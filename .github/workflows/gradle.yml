@@ -9,7 +9,7 @@ on:
 
   workflow_dispatch:
     branches:
-      - 'prod'
+        - 'prod'
       paths:
         - 'story/**'
 
