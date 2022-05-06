@@ -1,6 +1,9 @@
 name: Java CI
 
 on: [push]
+  push:
+    branches: [ 'prod' ]
+    paths: [ 'story/**' ]
 
 jobs:
   build:
