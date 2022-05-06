@@ -7,6 +7,12 @@ on:
     paths:
       - 'story/**'
 
+  workflow_dispatch:
+    branches:
+      - 'prod'
+      paths:
+        - 'story/**'
+
 jobs:
   build:
     runs-on: ubuntu-latest
