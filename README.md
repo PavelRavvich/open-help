@@ -4,3 +4,11 @@
 
 This software is open source, free self-hosted for any regional/municipal organizations or independent found who intend to contribute help to people who was forcibly displaced directly or indirectly by war reasons. OpenHelp does not have a central node for collecting data in order to avoid abuse. Each hoster must deal with the collected data in accordance with the laws of its country.
 Growth acceleration based on tools productivity. And open source community, most powerful driving force of fundamental solution's development.
+
+---
+
+_Backend requirements:_
+- Java v17
+- Gradle v7.4.2 
+
+---
