@@ -22,15 +22,15 @@ dictionary-service/logs-archive/*
 dictionary-service/build/*
 dictionary-service/.gradle/*
 
-config-server/logs/*
-config-server/logs-archive/*
-config-server/build/*
-config-server/.gradle/*
+config-service/logs/*
+config-service/logs-archive/*
+config-service/build/*
+config-service/.gradle/*
 
-eureka-server/logs/*
-eureka-server/logs-archive/*
-eureka-server/build/*
-eureka-server/.gradle/*
+discovery-service/logs/*
+discovery-service/logs-archive/*
+discovery-service/build/*
+discovery-service/.gradle/*
 
 group-service/logs/*
 group-service/logs-archive/*

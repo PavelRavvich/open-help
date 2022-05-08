@@ -1,8 +1,8 @@
 spring:
   application:
-    name: group-event
+    name: group
   profiles:
     active: default
   cloud:
     config:
-      uri: ${vcap.services.configserver.credentials.uri:http://localhost:8888/group-event}
+      uri: ${vcap.services.configserver.credentials.uri:http://localhost:8888/group}
