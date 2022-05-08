@@ -7,20 +7,20 @@ api-gateway/logs-archive/*
 api-gateway/build/*
 api-gateway/.gradle/*
 
-auth/logs/*
-auth/logs-archive/*
-auth/build/*
-auth/.gradle/*
+auth-service/logs/*
+auth-service/logs-archive/*
+auth-service/build/*
+auth-service/.gradle/*
 
-mail/logs/*
-mail/logs-archive/*
-mail/build/*
-mail/.gradle/*
+mail-service/logs/*
+mail-service/logs-archive/*
+mail-service/build/*
+mail-service/.gradle/*
 
-dictionary/logs/*
-dictionary/logs-archive/*
-dictionary/build/*
-dictionary/.gradle/*
+dictionary-service/logs/*
+dictionary-service/logs-archive/*
+dictionary-service/build/*
+dictionary-service/.gradle/*
 
 config-server/logs/*
 config-server/logs-archive/*
@@ -32,27 +32,27 @@ eureka-server/logs-archive/*
 eureka-server/build/*
 eureka-server/.gradle/*
 
-group-event/logs/*
-group-event/logs-archive/*
-group-event/build/*
-group-event/.gradle/*
+group-service/logs/*
+group-service/logs-archive/*
+group-service/build/*
+group-service/.gradle/*
 
-message/logs/*
-message/logs-archive/*
-message/build/*
-message/.gradle/*
+message-service/logs/*
+message-service/logs-archive/*
+message-service/build/*
+message-service/.gradle/*
 
-notification/logs/*
-notification/logs-archive/*
-notification/build/*
-notification/.gradle/*
+notification-service/logs/*
+notification-service/logs-archive/*
+notification-service/build/*
+notification-service/.gradle/*
 
-sos/logs/*
-sos/logs-archive/*
-sos/build/*
-sos/.gradle/*
+sos-service/logs/*
+sos-service/logs-archive/*
+sos-service/build/*
+sos-service/.gradle/*
 
-story/logs/*
-story/logs-archive/*
-story/build/*
-story/.gradle/*
+story-service/logs/*
+story-service/logs-archive/*
+story-service/build/*
+story-service/.gradle/*
