@@ -4,15 +4,27 @@ import com.openhelp.dictionary.dto.ListDto;
 import com.openhelp.dictionary.dto.tag.TagDto;
 import com.openhelp.dictionary.dto.tag.TagFilterDto;
 import com.openhelp.dictionary.mapper.TagMapper;
+import com.openhelp.dictionary.model.Tag;
 import com.openhelp.dictionary.repository.TagRepository;
+import com.openhelp.dictionary.repository.filter.TagFilter;
+import com.openhelp.dictionary.utils.Utils;
 import com.openhelp.dictionary.validation.NoSuchTagException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
+import static com.openhelp.dictionary.repository.TagRepository.*;
+
+/**
+ * @author Pavel Ravvich.
+ */
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -24,8 +36,20 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public ListDto<TagDto> getList(@NotNull TagFilterDto filterDto) {
-        // TODO: 5/9/2022 impl
-        return null;
+        Pageable pageable = PageRequest.of(filterDto.getPageNumber(),
+                filterDto.getPageSize(), Utils.getSort(filterDto));
+        TagFilter filter = tagMapper.tagFilterDtoToTagFilter(filterDto);
+        Page<Tag> page = tagRepository.findAll(
+                new TagSpecification(filter), pageable);
+        List<TagDto> items = page
+                .map(tagMapper::tagToTagDto)
+                .getContent();
+
+        log.info("Get Tag list {}", items);
+        return ListDto.<TagDto>builder()
+                .total(page.getTotalElements())
+                .items(items)
+                .build();
     }
 
     @Override

@@ -4,6 +4,9 @@ import com.openhelp.dictionary.dto.ListDto;
 import com.openhelp.dictionary.dto.tag.TagDto;
 import com.openhelp.dictionary.dto.tag.TagFilterDto;
 
+/**
+ * @author Pavel Ravvich.
+ */
 public interface TagService {
 
     ListDto<TagDto> getList(TagFilterDto filterDto);
