@@ -58,8 +58,8 @@ public class H2JpaConfig {
         return transactionManager;
     }
 
-//    @Bean
-//    public FlywayMigrationStrategy flywayMigrationStrategy() {
-//        return flyway -> { /* do nothing*/ };
-//    }
+    @Bean
+    public FlywayMigrationStrategy flywayMigrationStrategy() {
+        return flyway -> { /* do nothing*/ };
+    }
 }

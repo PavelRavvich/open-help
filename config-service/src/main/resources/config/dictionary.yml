@@ -8,12 +8,95 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
-logging:
-  pattern:
-    console: '%C{1.} [%-5level] %d{HH:mm:ss} - %msg%n'
-
 spring:
+  jms:
+    template:
+      priority: 100
+      qos-enabled: true
+      time-to-live: 36000
+      default-destination: empty
+      receive-timeout: 1000
+      delivery-mode: non_persistent
+    listener:
+      max-concurrency: 10
+      concurrency: 5
+      auto-startup: true
+      acknowledge-mode: auto
+    pub-sub-domain: false
+  activemq:
+    send-timeout: 0
+    pool:
+      max-connections: 1
+      time-between-expiration-check: -1
+      idle-timeout: 30000
+      enabled: false
+      use-anonymous-producers: true
+      block-if-full: true
+      block-if-full-timeout: -1
+    close-timeout: 15000
+    non-blocking-redelivery: false
+    packages:
+      trust-all: false
+      trusted: com.domain
+    in-memory: true
+    user: admin
+    password: admin
+    broker-url: vm://embedded?broker.persistent=false,useShutdownHook=false
+  jpa:
+    generate-ddl: 'false'
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        generate_statistics: 'false'
+        format_sql: 'true'
+        use_sql_comments: 'false'
+        show_sql: 'true'
+    hibernate:
+      ddl-auto: validate
+    open-in-view: 'false'
+  flyway:
+    baseline-on-migrate: 'true'
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/openhelp
+    driver-class-name: org.postgresql.Driver
+    password: '1'
     username: postgres
-    password: 1
+    url: jdbc:postgresql://127.0.0.1:5432/openhelp_dictionary
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+
+logging:
+  level:
+    org:
+      apache:
+        tomcat:
+          jdbc:
+            pool: DEBUG
+        nodeValue: ERROR
+      springframework:
+        security: INFO
+        nodeValue: DEBUG
+      hibernate:
+        nodeValue: ERROR
+        jdbc: ERROR
+        stat: DEBUG
+        SQL: WARN
+        cache: ERROR
+    root: ERROR
+    com:
+      openhelp: DEBUG
+      zaxxer:
+        hikari: DEBUG
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss:SSS} %-5level %logger{36} - %msg%n'
+
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: health
+
+openhelp:
+  logging:
+    path: logs
+    archive-path: logs/logs-archive
