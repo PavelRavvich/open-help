@@ -26,7 +26,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-import static com.openhelp.story.repository.StoryRepository.*;
+import static com.openhelp.story.repository.StoryRepository.StorySpecification;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.any;

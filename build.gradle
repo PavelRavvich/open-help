@@ -1,2 +1,38 @@
-group 'com.openhelp'
-version '1.0-SNAPSHOT'
+group = 'con.openhelp'
+version = '0.0.1-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+
+    apply plugin: 'java'
+    apply plugin: "checkstyle"
+
+    sourceCompatibility = rootProject.sourceCompatibility
+    targetCompatibility = rootProject.targetCompatibility
+
+    group = rootProject.group
+    version = rootProject.version
+
+    checkstyle {
+        toolVersion = '10.2'
+        configFile = rootProject.file('checkstyle.xml')
+        configProperties = [
+                'checkstyle.cache.file': "${buildDir}/checkstyle.cache",
+        ]
+        ignoreFailures = true
+        showViolations = true
+    }
+}
+
+wrapper {
+    gradleVersion = '7.4.2'
+}

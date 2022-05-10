@@ -1,13 +1,13 @@
 rootProject.name = 'open-help'
 
-include 'discovery-service'
-include 'config-service'
-include 'auth-service'
-include 'mail-service'
-include 'sos-service'
-include 'story-service'
-include 'group-service'
-include 'dictionary-service'
-include 'notification-service'
-include 'message-service'
-include 'api-gateway'
+include 'discovery-service',
+        'config-service',
+        'auth-service',
+        'mail-service',
+        'sos-service',
+        'story-service',
+        'group-service',
+        'dictionary-service',
+        'notification-service',
+        'message-service',
+        'api-gateway'

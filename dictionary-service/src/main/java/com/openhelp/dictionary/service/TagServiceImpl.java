@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static com.openhelp.dictionary.repository.TagRepository.*;
+import static com.openhelp.dictionary.repository.TagRepository.TagSpecification;
 
 /**
  * @author Pavel Ravvich.
