@@ -16,8 +16,8 @@ subprojects {
     apply plugin: 'java'
     apply plugin: "checkstyle"
 
-    sourceCompatibility = rootProject.sourceCompatibility
-    targetCompatibility = rootProject.targetCompatibility
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 
     group = rootProject.group
     version = rootProject.version
@@ -28,7 +28,7 @@ subprojects {
         configProperties = [
                 'checkstyle.cache.file': "${buildDir}/checkstyle.cache",
         ]
-        ignoreFailures = true
+        ignoreFailures = false
         showViolations = true
     }
 }
