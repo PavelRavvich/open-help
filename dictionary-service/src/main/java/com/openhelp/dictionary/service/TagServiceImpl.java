@@ -36,6 +36,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public ListDto<TagDto> getList(@NotNull TagFilterDto filterDto) {
+        log.info("Get Tag list by filter: {}", filterDto);
         Pageable pageable = PageRequest.of(filterDto.getPageNumber(),
                 filterDto.getPageSize(), Utils.getSort(filterDto));
         TagFilter filter = tagMapper.tagFilterDtoToTagFilter(filterDto);
@@ -44,8 +45,6 @@ public class TagServiceImpl implements TagService {
         List<TagDto> items = page
                 .map(tagMapper::tagToTagDto)
                 .getContent();
-
-        log.info("Get Tag list {}", items);
         return ListDto.<TagDto>builder()
                 .total(page.getTotalElements())
                 .items(items)
@@ -62,7 +61,9 @@ public class TagServiceImpl implements TagService {
     @Override
     public Long create(@NotNull TagDto dto) {
         log.debug("Create new Tag: {}", dto);
-        return tagRepository.save(tagMapper.tagDtoToTag(dto)).getId();
+        return tagRepository.save(
+                tagMapper.tagDtoToTag(dto)
+        ).getId();
     }
 
     @Override
@@ -71,7 +72,9 @@ public class TagServiceImpl implements TagService {
         if (!tagRepository.existsById(id)) {
             throw new NoSuchTagException();
         }
-        return tagRepository.save(tagMapper.tagDtoToTag(dto)).getId();
+        return tagRepository.save(
+                tagMapper.tagDtoToTag(dto)
+        ).getId();
     }
 
     @Override

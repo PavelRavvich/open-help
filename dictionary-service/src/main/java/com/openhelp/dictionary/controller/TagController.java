@@ -52,7 +52,7 @@ public class TagController {
 
     @PostMapping("/tag/{id}/delete")
     public ResponseEntity<Long> delete(@NotNull @PathVariable(name = "id") Long tagId) {
-        log.debug("Delete task id: {}", tagId);
+        log.debug("Delete Tag id: {}", tagId);
         return ResponseEntity.ok(tagService.delete(tagId));
     }
 }

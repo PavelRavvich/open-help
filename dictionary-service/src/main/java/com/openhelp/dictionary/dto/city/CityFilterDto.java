@@ -20,4 +20,10 @@ public class CityFilterDto extends FilterDto {
 
     @JsonProperty("title")
     private String title;
+
+    @JsonProperty("phoneCode")
+    private String phoneCode;
+
+    @JsonProperty("countryId")
+    private Long countryId;
 }

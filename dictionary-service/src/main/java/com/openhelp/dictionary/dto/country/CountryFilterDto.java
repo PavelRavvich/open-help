@@ -20,4 +20,13 @@ public class CountryFilterDto extends FilterDto {
 
     @JsonProperty("title")
     private String title;
+
+    @JsonProperty("phoneCode")
+    private String phoneCode;
+
+    @JsonProperty("isoCode")
+    private String isoCode;
+
+    @JsonProperty("countryCode")
+    private String countryCode;
 }

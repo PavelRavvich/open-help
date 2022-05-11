@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -19,7 +20,8 @@ public class TagFilter {
     private String title;
 
     public Optional<String> getTitle() {
-        return Optional.ofNullable(title);
+        return Objects.nonNull(title) && !title.isBlank()
+                ? Optional.of(title) : Optional.empty();
     }
 
 }

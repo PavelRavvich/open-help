@@ -43,6 +43,9 @@ public class Country {
     @Column(name = "iso_code")
     private String isoCode;
 
+    @Column(name = "phone_code")
+    private String phoneCode;
+
     @ToString.Exclude
     @OneToMany(mappedBy="country", fetch = FetchType.LAZY)
     private List<City> cities;
