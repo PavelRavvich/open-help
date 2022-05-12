@@ -1,20 +1,13 @@
 group = 'con.openhelp'
 version = '0.0.1-SNAPSHOT'
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
 subprojects {
     repositories {
         mavenCentral()
     }
 
     apply plugin: 'java'
-    apply plugin: "checkstyle"
+    apply plugin: 'checkstyle'
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
