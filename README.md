@@ -11,5 +11,8 @@ _Backend requirements:_
 - Java v17
 - Gradle v7.4.2 
 
-Build source `$ gradle clean build`
+Build source: 
+
+`$ gradle clean build`
+
 ---
