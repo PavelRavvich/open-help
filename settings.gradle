@@ -10,4 +10,5 @@ include 'discovery-service',
         'dictionary-service',
         'notification-service',
         'message-service',
-        'api-gateway'
+        'api-gateway',
+        'shared'

@@ -3,8 +3,9 @@
 logs/*
 build/*
 
-shared/.gradle/*
-shared/lib/build/*
+/shared/lib/build/*
+/shared/.gradle/*
+/shared/build/*
 
 api-gateway/logs/*
 api-gateway/logs-archive/*
