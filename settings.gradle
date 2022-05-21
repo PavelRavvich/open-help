@@ -11,4 +11,4 @@ include 'discovery-service',
         'notification-service',
         'message-service',
         'api-gateway',
-        'shared'
+        'libs'
