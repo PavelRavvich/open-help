@@ -12,10 +12,10 @@ api-gateway/logs-archive/*
 api-gateway/build/*
 api-gateway/.gradle/*
 
-auth-service/logs/*
-auth-service/logs-archive/*
-auth-service/build/*
-auth-service/.gradle/*
+profile-service/logs/*
+profile-service/logs-archive/*
+profile-service/build/*
+profile-service/.gradle/*
 
 mail-service/logs/*
 mail-service/logs-archive/*

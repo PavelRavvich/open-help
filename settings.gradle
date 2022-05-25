@@ -2,7 +2,7 @@ rootProject.name = 'open-help'
 
 include 'discovery-service',
         'config-service',
-        'auth-service',
+        'profile-service',
         'mail-service',
         'sos-service',
         'story-service',
