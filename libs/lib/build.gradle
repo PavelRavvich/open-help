@@ -1,5 +1,8 @@
+// Publish to maven local \gradlew publishToMavenLocal
+
 plugins {
     id 'java-library'
+    id 'maven-publish'
 }
 
 group = 'com.openhelp'
@@ -30,4 +33,12 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
 }
