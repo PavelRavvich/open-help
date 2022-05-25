@@ -29,7 +29,7 @@ Automation for group event scheduling.
 
 4. **Performance Dashboard**
 
-Elastic absorption employee\volunteers performance research based on activity statistic.
+Absorption employee\volunteers performance research based on activity statistic.
 
 5. **Sociological research data (API)** 
 
