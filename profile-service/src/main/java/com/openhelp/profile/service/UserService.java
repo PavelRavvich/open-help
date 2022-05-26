@@ -1,13 +1,14 @@
 package com.openhelp.profile.service;
 
 import com.openhelp.profile.config.jwt.JwtUser;
+import com.openhelp.profile.dto.ListDto;
+import com.openhelp.profile.dto.auth.SignUpRequestDto;
+import com.openhelp.profile.dto.user.UserDto;
+import com.openhelp.profile.dto.user.UserFilterDto;
 import com.openhelp.profile.enums.RoleType;
 import com.openhelp.profile.model.Role;
 import com.openhelp.profile.model.User;
-import com.openhelp.profile.repository.filter.UserFilter;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -36,17 +37,19 @@ public interface UserService {
         return getSecurityContextUser().getRoles().stream().map(Role::getSystemName).anyMatch(roles::contains);
     }
 
+    Long signUp(SignUpRequestDto sign);
+
     Long create(User user, boolean isEnabled);
 
     String activateUser(UUID activationCode);
 
-    Long update(Long userId, User user);
+    Long update(Long userId, SignUpRequestDto signUp);
 
     User getUserByUsername(String username);
 
-    Page<User> list(Pageable pagination, UserFilter filter);
+    ListDto<UserDto> list(UserFilterDto filter);
 
-    User findById(Long userId);
+    UserDto findById(Long userId);
 
     Long updatePassword(Long userId, String oldPassword, String newPassword);
 
