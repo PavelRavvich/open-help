@@ -2,7 +2,6 @@ package com.openhelp.profile.controller;
 
 import com.openhelp.profile.dto.role.RoleDto;
 import com.openhelp.profile.dto.role.RoleFilterDto;
-import com.openhelp.profile.mapper.RoleMapper;
 import com.openhelp.profile.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Pavel Ravvich.
