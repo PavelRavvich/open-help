@@ -1,8 +1,8 @@
 package com.openhelp.profile.service;
 
 
-import com.openhelp.profile.model.Role;
-import com.openhelp.profile.repository.filter.RoleFilter;
+import com.openhelp.profile.dto.role.RoleDto;
+import com.openhelp.profile.dto.role.RoleFilterDto;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface RoleService {
 
-    List<Role> list(RoleFilter filter);
+    List<RoleDto> list(RoleFilterDto filterDto);
 
-    Role findBySystemName(String systemName);
+    RoleDto findBySystemName(String systemName);
 }

@@ -5,14 +5,13 @@ import com.openhelp.profile.config.jwt.JwtUser;
 import com.openhelp.profile.dto.auth.AuthRequestDto;
 import com.openhelp.profile.dto.auth.AuthResponseDto;
 import com.openhelp.profile.dto.auth.SignUpRequestDto;
+import com.openhelp.profile.dto.role.RoleDto;
 import com.openhelp.profile.enums.RoleType;
 import com.openhelp.profile.mapper.AuthMapper;
-import com.openhelp.profile.model.Role;
 import com.openhelp.profile.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,8 +40,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Long registration(@NotNull SignUpRequestDto signup) {
+        RoleDto role = roleService.findBySystemName(RoleType.USER.getType());
         signup.setIsEnabled(false);
-        Role role = roleService.findBySystemName(RoleType.USER.getType());
         signup.setRoleIds(List.of(role.getId()));
         User user = authMapper.signUpRequestDtoToUser(signup);
         return userService.create(user, false);

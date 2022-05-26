@@ -27,13 +27,9 @@ public class RoleController {
 
     private final RoleService roleService;
 
-    private final RoleMapper roleMapper;
-
     @PostMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<RoleDto>> list(@NotNull @RequestBody @Valid RoleFilterDto filter) {
-        return ResponseEntity.ok(roleService.list(roleMapper.toRoleFilter(filter))
-                .stream().map(roleMapper::roleToRoleDto)
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(roleService.list(filter));
     }
 }
