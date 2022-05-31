@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS roles
 (
-    id          BIGINT PRIMARY KEY,
+    id          BIGSERIAL PRIMARY KEY,
     title       VARCHAR(255) UNIQUE NOT NULL,
     system_name VARCHAR(255) UNIQUE NOT NULL
 );

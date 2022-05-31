@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
@@ -44,6 +45,26 @@ public class Role {
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<User> users;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy="role", fetch = FetchType.LAZY)
+    private List<RolePolicy> rolePolicies;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy="role", fetch = FetchType.LAZY)
+    private List<UserPolicy> userPolicies;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy="role", fetch = FetchType.LAZY)
+    private List<SosPolicy> sosPolicies;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy="role", fetch = FetchType.LAZY)
+    private List<StoryPolicy> storyPolicies;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy="role", fetch = FetchType.LAZY)
+    private List<GroupPolicy> groupPolicies;
 
     @Override
     public boolean equals(Object o) {
