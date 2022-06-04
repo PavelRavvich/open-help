@@ -1,6 +1,14 @@
 server:
   port: 0
 
+activation:
+  redirect:
+    url: ${loginPage.protocol}://${loginPage.host}:${loginPage.port}/auth/activate
+loginPage:
+  host: 'localhost'
+  port: '4200'
+  protocol: 'http'
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${random.uuid}

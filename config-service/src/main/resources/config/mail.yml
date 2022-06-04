@@ -1,6 +1,20 @@
 server:
   port: 0
 
+api:
+  port: '8080'
+  host: localhost
+  protocol: http
+
+mail-service:
+  port: '5321'
+  endpoint: ${mail-service.protocol}://${mail-service.host}:${mail-service.port}/api/mail
+  host: localhost
+  protocol: http
+
+activation:
+  endpoint: ${api.protocol}://${api.host}:${api.port}/api/profile/auth/registration/activate
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${random.uuid}
