@@ -11,6 +11,7 @@ import com.openhelp.profile.model.User;
 import com.openhelp.profile.repository.UserRepository;
 import com.openhelp.profile.repository.filter.UserFilter;
 import com.openhelp.profile.utils.SecurityUtils;
+import com.openhelp.profile.utils.Utils;
 import com.openhelp.profile.validation.AccessDeniedException;
 import com.openhelp.profile.validation.PasswordChangeException;
 import lombok.RequiredArgsConstructor;
@@ -106,8 +107,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ListDto<UserDto> list(@NotNull UserFilterDto filterDto) {
         UserFilter filter = userMapper.toUserFilter(filterDto);
-        Pageable pagination = PageRequest.of(
-                filterDto.getPageNumber(), filterDto.getPageSize());
+        Pageable pagination = PageRequest.of(filterDto.getPageNumber(),
+                filterDto.getPageSize(), Utils.getSort(filterDto));
         UserSpecification specification = new UserSpecification(filter);
         Specification<User> where = Specification.where(specification);
         Page<User> page = userRepository.findAll(where, pagination);

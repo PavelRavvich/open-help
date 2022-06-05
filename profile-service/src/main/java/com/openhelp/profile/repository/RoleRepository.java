@@ -2,7 +2,7 @@ package com.openhelp.profile.repository;
 
 import com.openhelp.profile.model.Role;
 import com.openhelp.profile.repository.filter.RoleFilter;
-import com.openhelp.profile.utils.Utils;
+import com.openhelp.profile.utils.HqlUtils;
 import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.domain.Specification;
@@ -39,7 +39,7 @@ public interface RoleRepository
             List<Expression<Boolean>> exps = predicate.getExpressions();
 
             filter.getTitle().ifPresent(title ->
-                    exps.add(builder.like(builder.lower(root.get("title")), Utils.toLikeLower(title))));
+                    exps.add(builder.like(builder.lower(root.get("title")), HqlUtils.toLikeLower(title))));
 
             return predicate;
         }

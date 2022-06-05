@@ -10,10 +10,6 @@ import java.util.Objects;
  * @author Pavel Ravvich.
  */
 public class Utils {
-    @NotNull
-    public static String toLikeLower(@NotNull String value) {
-        return String.format("%%%s%%", value.trim().toLowerCase());
-    }
 
     @NotNull
     public static Sort getSort(@NotNull FilterDto filterDto) {

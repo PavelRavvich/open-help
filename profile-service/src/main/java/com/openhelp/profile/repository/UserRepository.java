@@ -2,7 +2,7 @@ package com.openhelp.profile.repository;
 
 import com.openhelp.profile.model.User;
 import com.openhelp.profile.repository.filter.UserFilter;
-import com.openhelp.profile.utils.Utils;
+import com.openhelp.profile.utils.HqlUtils;
 import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
@@ -73,10 +73,10 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
                     exps.add(builder.equal(root.get("isEnabled"), isEnabled)));
 
             filter.getUsername().ifPresent(username ->
-                    exps.add(builder.like(builder.lower(root.get("username")), Utils.toLikeLower(username))));
+                    exps.add(builder.like(builder.lower(root.get("username")), HqlUtils.toLikeLower(username))));
 
             filter.getNickname().ifPresent(nickname ->
-                    exps.add(builder.like(builder.lower(root.get("nickname")), Utils.toLikeLower(nickname))));
+                    exps.add(builder.like(builder.lower(root.get("nickname")), HqlUtils.toLikeLower(nickname))));
 
             filter.getRoles().ifPresent(roles -> {
                 Predicate[] predicates = roles.stream()
