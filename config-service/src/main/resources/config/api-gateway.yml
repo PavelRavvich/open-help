@@ -22,31 +22,31 @@ spring:
           enabled: true
           lower-case-service-id: true
       default-filters:
-        - RewritePath=/api/.*?/(?<remaining>.*), /$\{remaining}
+        - RewritePath=/api/v1/.*?/(?<remaining>.*), /$\{remaining}
       routes:
         - predicates:
-            - Path=/api/profile/**
+            - Path=/api/v1/profile/**
           uri: lb://profile
         - predicates:
-            - Path=/api/dictionary/**
+            - Path=/api/v1/dictionary/**
           uri: lb://dictionary
         - predicates:
-            - Path=/api/sos/**
+            - Path=/api/v1/sos/**
           uri: lb://sos
         - predicates:
-            - Path=/api/story/**
+            - Path=/api/v1/story/**
           uri: lb://story
         - predicates:
-            - Path=/api/group/**
+            - Path=/api/v1/group/**
           uri: lb://group
         - predicates:
-            - Path=/api/message/**
+            - Path=/api/v1/message/**
           uri: lb://message
         - predicates:
-            - Path=/api/notification/**
+            - Path=/api/v1/notification/**
           uri: lb://notification
         - predicates:
-            - Path=/api/mail/**
+            - Path=/api/v1/mail/**
           uri: lb://mail
 
 logging:
