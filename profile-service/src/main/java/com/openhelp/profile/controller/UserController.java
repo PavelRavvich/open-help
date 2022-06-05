@@ -43,7 +43,7 @@ public class UserController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Long> create(@NotNull @RequestBody @Valid SignUpRequestDto req) {
-        return ResponseEntity.ok(userService.signUp(req));
+        return ResponseEntity.ok(userService.create(req));
     }
 
     @PostMapping("/{id}/update")

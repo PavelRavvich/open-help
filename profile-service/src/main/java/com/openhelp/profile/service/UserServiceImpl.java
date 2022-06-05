@@ -16,7 +16,6 @@ import com.openhelp.profile.validation.AccessDeniedException;
 import com.openhelp.profile.validation.PasswordChangeException;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,9 +38,6 @@ import static com.openhelp.profile.utils.SecurityUtils.getSecurityContextUserId;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Value("${activation.redirect.url}")
-    private String activationRedirectUrl;
-
     private final MailService mailService;
 
     private final UserRepository userRepository;
@@ -53,7 +49,7 @@ public class UserServiceImpl implements UserService {
     private final AuthMapper authMapper;
 
     @Override
-    public Long signUp(@NotNull SignUpRequestDto signUp) {
+    public Long create(@NotNull SignUpRequestDto signUp) {
         User user = authMapper.signUpRequestDtoToUser(signUp);
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
@@ -81,9 +77,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String activateUser(@NotNull UUID activationCode) {
+    public void updateIsEnabledByActivationCode(@NotNull UUID activationCode) {
         userRepository.updateIsEnabledByActivationCode(true, activationCode);
-        return activationRedirectUrl;
     }
 
     @Override
@@ -100,7 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUsername(@NotNull String username) {
+    public User findByUsername(@NotNull String username) {
         return userRepository.findByUsername(username);
     }
 

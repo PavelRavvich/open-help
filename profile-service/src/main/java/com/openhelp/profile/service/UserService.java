@@ -13,19 +13,19 @@ import java.util.UUID;
  */
 public interface UserService {
 
-    Long signUp(SignUpRequestDto sign);
+    UserDto findById(Long userId);
 
-    Long create(User user, boolean isEnabled);
-
-    String activateUser(UUID activationCode);
-
-    Long update(Long userId, SignUpRequestDto signUp);
-
-    User getUserByUsername(String username);
+    User findByUsername(String username);
 
     ListDto<UserDto> list(UserFilterDto filter);
 
-    UserDto findById(Long userId);
+    Long create(SignUpRequestDto sign);
+
+    Long create(User user, boolean isEnabled);
+
+    Long update(Long userId, SignUpRequestDto signUp);
+
+    void updateIsEnabledByActivationCode(UUID activationCode);
 
     Long updatePassword(Long userId, String oldPassword, String newPassword);
 

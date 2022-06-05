@@ -13,6 +13,7 @@ import com.openhelp.profile.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,6 +29,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
+
+    @Value("${activation.redirect.url}")
+    private String activationRedirectUrl;
 
     private final AuthenticationManager authenticationManager;
 
@@ -50,7 +54,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String activate(@NotNull UUID activationCode) {
-        return userService.activateUser(activationCode);
+        userService.updateIsEnabledByActivationCode(activationCode);
+        return activationRedirectUrl;
     }
 
     @Override
