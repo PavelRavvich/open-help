@@ -1,18 +1,53 @@
 server:
   port: 8765
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
 spring:
+  application:
+    name: gateway
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
+      default-filters:
+        - RewritePath=/api/.*?/(?<remaining>.*), /$\{remaining}
+      routes:
+        - predicates:
+            - Path=/api/profile/**
+          uri: lb://profile
+        - predicates:
+            - Path=/api/dictionary/**
+          uri: lb://dictionary
+        - predicates:
+            - Path=/api/sos/**
+          uri: lb://sos
+        - predicates:
+            - Path=/api/story/**
+          uri: lb://story
+        - predicates:
+            - Path=/api/group/**
+          uri: lb://group
+        - predicates:
+            - Path=/api/message/**
+          uri: lb://message
+        - predicates:
+            - Path=/api/notification/**
+          uri: lb://notification
+        - predicates:
+            - Path=/api/mail/**
+          uri: lb://mail
 
 logging:
   pattern:
