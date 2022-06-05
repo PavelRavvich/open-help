@@ -4,6 +4,7 @@ import com.openhelp.profile.model.User;
 import lombok.Data;
 import lombok.NonNull;
 import net.minidev.json.annotate.JsonIgnore;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,11 +17,13 @@ import java.util.List;
 @Data
 public class JwtUser implements UserDetails {
 
-    private @NonNull User user;
+    @NonNull
+    private User user;
 
+    @NonNull
     private List<GrantedAuthority> authorities;
 
-    public JwtUser(User user, List<GrantedAuthority> authorities) {
+    public JwtUser(@NotNull User user, @NotNull List<GrantedAuthority> authorities) {
         this.user = user;
         this.authorities = authorities;
     }
