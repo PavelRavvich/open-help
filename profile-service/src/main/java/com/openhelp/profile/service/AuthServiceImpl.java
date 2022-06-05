@@ -9,6 +9,7 @@ import com.openhelp.profile.dto.role.RoleDto;
 import com.openhelp.profile.enums.RoleType;
 import com.openhelp.profile.mapper.AuthMapper;
 import com.openhelp.profile.model.User;
+import com.openhelp.profile.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -65,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponseDto checkToken(@NotNull String token) {
         String accessToken = token.replace("Bearer ", "");
-        User user = userService.getSecurityContextUser();
+        User user = SecurityUtils.getSecurityContextUser();
         return authMapper.toAuthResponseDto(accessToken, user);
     }
 }

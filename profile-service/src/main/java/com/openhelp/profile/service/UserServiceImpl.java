@@ -10,6 +10,7 @@ import com.openhelp.profile.mapper.UserMapper;
 import com.openhelp.profile.model.User;
 import com.openhelp.profile.repository.UserRepository;
 import com.openhelp.profile.repository.filter.UserFilter;
+import com.openhelp.profile.utils.SecurityUtils;
 import com.openhelp.profile.validation.AccessDeniedException;
 import com.openhelp.profile.validation.PasswordChangeException;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.openhelp.profile.repository.UserRepository.UserSpecification;
+import static com.openhelp.profile.utils.SecurityUtils.anyMatchCredentials;
+import static com.openhelp.profile.utils.SecurityUtils.getSecurityContextUserId;
 
 /**
  * @author Pavel Ravvich.
@@ -116,7 +119,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findById(@NotNull Long userId) {
-        if (!anyMatchCredentials(RoleType.ADMIN) && !getSecurityContextUserId().equals(userId)) {
+        if (!SecurityUtils.anyMatchCredentials(RoleType.ADMIN)
+                && !getSecurityContextUserId().equals(userId)) {
             throw new AccessDeniedException();
         }
         User user = userRepository.findById(userId).orElseThrow();
@@ -124,8 +128,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long updatePassword(@NotNull Long userId, @NotNull String oldPassword, @NotNull String newPassword) {
-        if (!userId.equals(getSecurityContextUserId()) && !anyMatchCredentials(RoleType.ADMIN)) {
+    public Long updatePassword(@NotNull Long userId,
+                               @NotNull String oldPassword,
+                               @NotNull String newPassword) {
+        if (!SecurityUtils.getSecurityContextUserId().equals(userId)
+                && !SecurityUtils.anyMatchCredentials(RoleType.ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -141,7 +148,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long updateNickname(@NotNull Long userId, @NotNull String nickname) {
-        if (!userId.equals(getSecurityContextUserId()) && !anyMatchCredentials(RoleType.ADMIN)) {
+        if (!userId.equals(getSecurityContextUserId())
+                && !anyMatchCredentials(RoleType.ADMIN)) {
             throw new AccessDeniedException();
         }
         userRepository.updateNicknameById(userId, nickname);
