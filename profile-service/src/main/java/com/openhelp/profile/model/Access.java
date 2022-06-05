@@ -28,8 +28,8 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "access_policies")
-public class AccessPolicy {
+@Table(name = "access")
+public class Access {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -162,7 +162,7 @@ public class AccessPolicy {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AccessPolicy that = (AccessPolicy) o;
+        Access that = (Access) o;
 
         if (!Objects.equals(isReadRoleList, that.isReadRoleList))
             return false;

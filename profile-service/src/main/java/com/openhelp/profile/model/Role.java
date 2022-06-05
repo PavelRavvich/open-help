@@ -44,7 +44,7 @@ public class Role {
 
     @ToString.Exclude
     @OneToOne(mappedBy = "role")
-    private AccessPolicy accessPolicies;
+    private Access access;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @ToString.Exclude

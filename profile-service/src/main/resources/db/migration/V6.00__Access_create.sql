@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS access_policies
+CREATE TABLE IF NOT EXISTS access
 (
     id                          BIGSERIAL PRIMARY KEY,
     is_read_role_list           BOOLEAN NOT NULL,

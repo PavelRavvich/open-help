@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
  * @author Pavel Ravvich.
  */
 @Mapper(componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        uses = {AccessMapper.class})
 public interface RoleMapper {
 
     RoleDto roleToRoleDto(Role role);
