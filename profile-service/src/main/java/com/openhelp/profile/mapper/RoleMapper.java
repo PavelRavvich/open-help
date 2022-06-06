@@ -29,4 +29,6 @@ public interface RoleMapper {
                 ? Lists.newArrayList()
                 : ids.stream().map(id -> Role.builder().id(id).build()).collect(Collectors.toList());
     }
+
+    Role roleDtoToRole(RoleDto dto);
 }

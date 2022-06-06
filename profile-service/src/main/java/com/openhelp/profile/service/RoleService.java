@@ -10,7 +10,13 @@ import java.util.List;
  */
 public interface RoleService {
 
+    RoleDto findById(Long id);
+
     List<RoleDto> list(RoleFilterDto filterDto);
 
     RoleDto findBySystemName(String systemName);
+
+    Long create(RoleDto role);
+
+    Long update(Long id, RoleDto role);
 }
