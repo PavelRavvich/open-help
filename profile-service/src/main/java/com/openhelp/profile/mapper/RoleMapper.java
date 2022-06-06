@@ -3,6 +3,7 @@ package com.openhelp.profile.mapper;
 import com.google.common.collect.Lists;
 import com.openhelp.profile.dto.role.RoleDto;
 import com.openhelp.profile.dto.role.RoleFilterDto;
+import com.openhelp.profile.dto.role.RoleRequestDto;
 import com.openhelp.profile.model.Role;
 import com.openhelp.profile.repository.filter.RoleFilter;
 import org.mapstruct.InjectionStrategy;
@@ -31,4 +32,6 @@ public interface RoleMapper {
     }
 
     Role roleDtoToRole(RoleDto dto);
+
+    Role roleRequestDtoToRole(RoleRequestDto role);
 }

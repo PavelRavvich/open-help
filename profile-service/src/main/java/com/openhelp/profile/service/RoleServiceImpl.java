@@ -2,8 +2,8 @@ package com.openhelp.profile.service;
 
 import com.openhelp.profile.dto.role.RoleDto;
 import com.openhelp.profile.dto.role.RoleFilterDto;
+import com.openhelp.profile.dto.role.RoleRequestDto;
 import com.openhelp.profile.mapper.RoleMapper;
-import com.openhelp.profile.model.Access;
 import com.openhelp.profile.model.Role;
 import com.openhelp.profile.repository.RoleRepository;
 import com.openhelp.profile.repository.RoleRepository.RoleSpecification;
@@ -55,29 +55,22 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Long create(@NotNull RoleDto dto) {
+    public Long create(@NotNull RoleRequestDto role) {
         return roleRepository.save(
-                Role.builder()
-                        .access(Access.builder().build())
-                        .systemName(dto.getSystemName())
-                        .title(dto.getTitle())
-                        .build()
+                roleMapper.roleRequestDtoToRole(role)
         ).getId();
     }
 
     @Override
     @Transactional
-    public Long update(@NotNull Long id, @NotNull RoleDto dto) {
-        roleRepository.save(
-                roleRepository
-                        .findById(id)
-                        .map(role -> {
-                            Role update = roleMapper.roleDtoToRole(dto);
-                            update.setSystemName(update.getSystemName());
-                            update.setAccess(update.getAccess());
-                            update.setTitle(update.getTitle());
-                            return role;
-                        }).orElseThrow(NoSuchElementException::new));
+    public Long update(@NotNull Long id, @NotNull RoleRequestDto request) {
+        if (roleRepository.existsById(id)) {
+            Role role = roleMapper.roleRequestDtoToRole(request);
+            role.setId(id);
+            roleRepository.save(role);
+        } else {
+            throw new NoSuchElementException();
+        }
         return id;
     }
 }

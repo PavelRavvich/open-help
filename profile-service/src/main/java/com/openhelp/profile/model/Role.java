@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,7 +44,7 @@ public class Role {
     private String title;
 
     @ToString.Exclude
-    @OneToOne(mappedBy = "role")
+    @OneToOne(mappedBy = "role", cascade = CascadeType.ALL)
     private Access access;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)

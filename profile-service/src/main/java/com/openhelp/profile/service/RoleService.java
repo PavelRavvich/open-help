@@ -2,6 +2,7 @@ package com.openhelp.profile.service;
 
 import com.openhelp.profile.dto.role.RoleDto;
 import com.openhelp.profile.dto.role.RoleFilterDto;
+import com.openhelp.profile.dto.role.RoleRequestDto;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface RoleService {
 
     RoleDto findBySystemName(String systemName);
 
-    Long create(RoleDto role);
+    Long create(RoleRequestDto role);
 
-    Long update(Long id, RoleDto role);
+    Long update(Long id, RoleRequestDto role);
 }

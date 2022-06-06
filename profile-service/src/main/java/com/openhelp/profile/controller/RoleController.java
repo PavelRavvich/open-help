@@ -2,6 +2,7 @@ package com.openhelp.profile.controller;
 
 import com.openhelp.profile.dto.role.RoleDto;
 import com.openhelp.profile.dto.role.RoleFilterDto;
+import com.openhelp.profile.dto.role.RoleRequestDto;
 import com.openhelp.profile.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -40,14 +41,14 @@ public class RoleController {
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Long> create(@NotNull @RequestBody @Valid RoleDto role) {
-        return ResponseEntity.ok(roleService.create(role));
+    public ResponseEntity<Long> create(@NotNull @RequestBody @Valid RoleRequestDto req) {
+        return ResponseEntity.ok(roleService.create(req));
     }
 
     @PostMapping("/{id}/update")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Long> update(@NotNull @PathVariable(name = "id") Long id,
-                                       @NotNull @RequestBody @Valid RoleDto role) {
-        return ResponseEntity.ok(roleService.update(id, role));
+                                       @NotNull @RequestBody @Valid RoleRequestDto req) {
+        return ResponseEntity.ok(roleService.update(id, req));
     }
 }
