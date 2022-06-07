@@ -46,7 +46,7 @@ public class AuthController {
     }
 
     @PostMapping("/checkToken")
-    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AuthResponseDto> checkToken(@NotNull @RequestHeader(name = "Authorization") String token) {
         return ResponseEntity.ok(authService.checkToken(token));
     }

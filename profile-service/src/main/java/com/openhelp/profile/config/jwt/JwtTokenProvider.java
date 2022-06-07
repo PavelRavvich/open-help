@@ -44,12 +44,9 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String username) {
-
         Claims claims = Jwts.claims().setSubject(username);
-
         Date now = new Date();
         Date validity = new Date(now.getTime() + expiredMilliseconds);
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
@@ -86,7 +83,7 @@ public class JwtTokenProvider {
                     .getExpiration()
                     .after(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            log.warn("JWT token is invalid");
+            log.debug("JWT token is invalid");
         }
         return false;
     }
