@@ -3,6 +3,7 @@ package com.openhelp.profile.mapper;
 import com.openhelp.profile.dto.user.UserDto;
 import com.openhelp.profile.dto.user.UserDumbDto;
 import com.openhelp.profile.dto.user.UserFilterDto;
+import com.openhelp.profile.dto.user.UserItemDto;
 import com.openhelp.profile.model.User;
 import com.openhelp.profile.repository.filter.UserFilter;
 import org.mapstruct.InjectionStrategy;
@@ -24,4 +25,6 @@ public interface UserMapper {
     @Mapping(source = "roleIds", target = "roles")
     UserFilter toUserFilter(UserFilterDto dto);
 
+    @Mapping(target = "roles.access", ignore = true)
+    UserItemDto userToUserItemDto(User user);
 }

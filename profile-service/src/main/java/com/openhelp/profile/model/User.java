@@ -38,6 +38,11 @@ import java.util.UUID;
 @Table(name = "users")
 @NamedEntityGraphs({
         @NamedEntityGraph(
+                name = "user.roles",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "roles")
+                }),
+        @NamedEntityGraph(
                 name = "user.roles.access",
                 attributeNodes = {
                         @NamedAttributeNode(value = "roles", subgraph = "roles.access")
@@ -47,8 +52,7 @@ import java.util.UUID;
                                 name = "roles.access",
                                 attributeNodes = {
                                         @NamedAttributeNode(value = "access")
-                                }
-                        )
+                                })
                 })
 })
 public class User {

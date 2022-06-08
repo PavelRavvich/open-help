@@ -3,6 +3,7 @@ package com.openhelp.profile.mapper;
 import com.google.common.collect.Lists;
 import com.openhelp.profile.dto.role.RoleDto;
 import com.openhelp.profile.dto.role.RoleFilterDto;
+import com.openhelp.profile.dto.role.RoleItemDto;
 import com.openhelp.profile.dto.role.RoleRequestDto;
 import com.openhelp.profile.model.Role;
 import com.openhelp.profile.repository.filter.RoleFilter;
@@ -39,4 +40,6 @@ public interface RoleMapper {
     @Mapping(target = "users", ignore = true)
     @Mapping(source = "accessIds", target = "access")
     Role roleRequestDtoToRole(RoleRequestDto role);
+
+    RoleItemDto roleToRoleItemDto(Role role);
 }

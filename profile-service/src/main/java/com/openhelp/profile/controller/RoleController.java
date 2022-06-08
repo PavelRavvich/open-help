@@ -2,6 +2,7 @@ package com.openhelp.profile.controller;
 
 import com.openhelp.profile.dto.role.RoleDto;
 import com.openhelp.profile.dto.role.RoleFilterDto;
+import com.openhelp.profile.dto.role.RoleItemDto;
 import com.openhelp.profile.dto.role.RoleRequestDto;
 import com.openhelp.profile.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class RoleController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<RoleDto>> list(@NotNull @RequestBody @Valid RoleFilterDto filter) {
+    public ResponseEntity<List<RoleItemDto>> list(@NotNull @RequestBody @Valid RoleFilterDto filter) {
         return ResponseEntity.ok(roleService.list(filter));
     }
 

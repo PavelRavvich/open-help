@@ -4,6 +4,7 @@ import com.openhelp.profile.dto.ListDto;
 import com.openhelp.profile.dto.auth.SignUpRequestDto;
 import com.openhelp.profile.dto.user.UserDto;
 import com.openhelp.profile.dto.user.UserFilterDto;
+import com.openhelp.profile.dto.user.UserItemDto;
 import com.openhelp.profile.model.User;
 
 import java.util.UUID;
@@ -17,7 +18,7 @@ public interface UserService {
 
     User findByUsername(String username);
 
-    ListDto<UserDto> list(UserFilterDto filter);
+    ListDto<UserItemDto> list(UserFilterDto filter);
 
     Long create(SignUpRequestDto sign);
 

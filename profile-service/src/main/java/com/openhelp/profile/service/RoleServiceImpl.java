@@ -2,6 +2,7 @@ package com.openhelp.profile.service;
 
 import com.openhelp.profile.dto.role.RoleDto;
 import com.openhelp.profile.dto.role.RoleFilterDto;
+import com.openhelp.profile.dto.role.RoleItemDto;
 import com.openhelp.profile.dto.role.RoleRequestDto;
 import com.openhelp.profile.mapper.RoleMapper;
 import com.openhelp.profile.model.Role;
@@ -37,13 +38,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleDto> list(@NotNull RoleFilterDto filterDto) {
+    public List<RoleItemDto> list(@NotNull RoleFilterDto filterDto) {
         RoleFilter filter = roleMapper.toRoleFilter(filterDto);
         RoleSpecification specification = new RoleSpecification(filter);
         Specification<Role> where = Specification.where(specification);
         return roleRepository.findAll(where)
                 .stream()
-                .map(roleMapper::roleToRoleDto)
+                .map(roleMapper::roleToRoleItemDto)
                 .collect(Collectors.toList());
     }
 

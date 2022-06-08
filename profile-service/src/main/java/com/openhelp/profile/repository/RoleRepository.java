@@ -6,6 +6,7 @@ import com.openhelp.profile.utils.HqlUtils;
 import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -26,6 +27,10 @@ import java.util.Optional;
 @Transactional
 public interface RoleRepository
         extends JpaRepository<Role, Long>, JpaSpecificationExecutor<Role> {
+
+    @NotNull
+    @EntityGraph(value = "role.access")
+    Optional<Role> findById(@NotNull Long id);
 
     Optional<Role> findBySystemName(@NotNull String systemName);
 

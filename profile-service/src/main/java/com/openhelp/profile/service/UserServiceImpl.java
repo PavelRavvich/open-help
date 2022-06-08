@@ -4,6 +4,7 @@ import com.openhelp.profile.dto.ListDto;
 import com.openhelp.profile.dto.auth.SignUpRequestDto;
 import com.openhelp.profile.dto.user.UserDto;
 import com.openhelp.profile.dto.user.UserFilterDto;
+import com.openhelp.profile.dto.user.UserItemDto;
 import com.openhelp.profile.enums.RoleType;
 import com.openhelp.profile.mapper.AuthMapper;
 import com.openhelp.profile.mapper.UserMapper;
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long update(@NotNull Long userId, @NotNull SignUpRequestDto sign) {
         User candidate = authMapper.signUpRequestDtoToUser(sign);
-        User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+        User user = userRepository.findDistinctById(userId).orElseThrow(NoSuchElementException::new);
         user.setIsEnabled(candidate.getIsEnabled());
         user.setCredentialsNonExpired(candidate.getIsEnabled());
         user.setAccountNonExpired(candidate.getIsEnabled());
@@ -96,20 +97,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(@NotNull String username) {
-        return userRepository.findByUsername(username);
+        return userRepository
+                .findDistinctByUsername(username)
+                .orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public ListDto<UserDto> list(@NotNull UserFilterDto filterDto) {
+    public ListDto<UserItemDto> list(@NotNull UserFilterDto filterDto) {
         UserFilter filter = userMapper.toUserFilter(filterDto);
         Pageable pagination = PageRequest.of(filterDto.getPageNumber(),
                 filterDto.getPageSize(), Utils.getSort(filterDto));
         UserSpecification specification = new UserSpecification(filter);
         Specification<User> where = Specification.where(specification);
         Page<User> page = userRepository.findAll(where, pagination);
-        return ListDto.<UserDto>builder()
+        return ListDto.<UserItemDto>builder()
                 .total(page.getTotalElements())
-                .items(page.map(userMapper::userToUserDto).getContent())
+                .items(page.map(userMapper::userToUserItemDto).getContent())
                 .build();
     }
 
@@ -119,7 +122,7 @@ public class UserServiceImpl implements UserService {
                 && !getSecurityContextUserId().equals(userId)) {
             throw new AccessDeniedException();
         }
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findDistinctById(userId).orElseThrow();
         return userMapper.userToUserDto(user);
     }
 
@@ -132,7 +135,7 @@ public class UserServiceImpl implements UserService {
             throw new AccessDeniedException();
         }
 
-        User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+        User user = userRepository.findDistinctById(userId).orElseThrow(NoSuchElementException::new);
         if (passwordEncoder.matches(oldPassword, user.getPassword())) {
             userRepository.updatePasswordById(userId, passwordEncoder.encode(newPassword));
         } else {

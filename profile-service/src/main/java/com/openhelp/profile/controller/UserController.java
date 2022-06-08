@@ -4,6 +4,7 @@ import com.openhelp.profile.dto.ListDto;
 import com.openhelp.profile.dto.auth.SignUpRequestDto;
 import com.openhelp.profile.dto.user.UserDto;
 import com.openhelp.profile.dto.user.UserFilterDto;
+import com.openhelp.profile.dto.user.UserItemDto;
 import com.openhelp.profile.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +31,7 @@ public class UserController {
 
     @PostMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ListDto<UserDto>> list(@NotNull @RequestBody @Valid UserFilterDto filter) {
+    public ResponseEntity<ListDto<UserItemDto>> list(@NotNull @RequestBody @Valid UserFilterDto filter) {
         return ResponseEntity.ok(userService.list(filter));
     }
 

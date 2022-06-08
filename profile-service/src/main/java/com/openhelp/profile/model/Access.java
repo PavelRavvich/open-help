@@ -58,12 +58,21 @@ public class Access {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Access access = (Access) o;
-        return Objects.equals(id, access.id);
+
+        if (!Objects.equals(id, access.id)) return false;
+        if (!Objects.equals(title, access.title)) return false;
+        if (entityType != access.entityType) return false;
+        return operationType == access.operationType;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (entityType != null ? entityType.hashCode() : 0);
+        result = 31 * result + (operationType != null ? operationType.hashCode() : 0);
+        return result;
     }
 }
