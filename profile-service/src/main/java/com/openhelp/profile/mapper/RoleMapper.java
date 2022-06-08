@@ -8,6 +8,7 @@ import com.openhelp.profile.model.Role;
 import com.openhelp.profile.repository.filter.RoleFilter;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,13 +26,17 @@ public interface RoleMapper {
 
     RoleFilter toRoleFilter(RoleFilterDto dto);
 
-    default List<Role> roleIdListToRoleList(List<Long> ids) {
+    default List<Role> roleIdsListToRoleList(List<Long> ids) {
         return Objects.isNull(ids)
                 ? Lists.newArrayList()
                 : ids.stream().map(id -> Role.builder().id(id).build()).collect(Collectors.toList());
     }
 
+    @Mapping(target = "users", ignore = true)
     Role roleDtoToRole(RoleDto dto);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "users", ignore = true)
+    @Mapping(source = "accessIds", target = "access")
     Role roleRequestDtoToRole(RoleRequestDto role);
 }

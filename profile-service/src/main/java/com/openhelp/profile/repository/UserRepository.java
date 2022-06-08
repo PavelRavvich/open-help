@@ -34,10 +34,10 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
     @NotNull
-    @EntityGraph(value = "user[roles]")
+    @EntityGraph(value = "user.roles.access")
     Optional<User> findById(@NotNull Long userId);
 
-    @EntityGraph(value = "user[roles]")
+    @EntityGraph(value = "user.roles.access")
     User findByUsername(@NonNull String username);
 
     @Modifying
@@ -55,7 +55,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     @NotNull
     @Override
-    @EntityGraph(value = "user[roles]")
+    @EntityGraph(value = "user.roles.access")
     Page<User> findAll(@Nullable Specification<User> spec, @NotNull Pageable pageable);
 
     record UserSpecification(@NonNull UserFilter filter) implements Specification<User> {

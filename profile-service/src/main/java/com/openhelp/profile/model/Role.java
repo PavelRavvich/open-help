@@ -7,18 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Pavel Ravvich.
@@ -43,9 +35,12 @@ public class Role {
     @Column(name = "title")
     private String title;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "roles_access",
+            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "access_id", referencedColumnName = "id"))
     @ToString.Exclude
-    @OneToOne(mappedBy = "role", cascade = CascadeType.ALL)
-    private Access access;
+    private Set<Access> access;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @ToString.Exclude

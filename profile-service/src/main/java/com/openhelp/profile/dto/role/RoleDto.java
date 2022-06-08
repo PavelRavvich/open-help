@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Pavel Ravvich.
  */
@@ -28,5 +31,5 @@ public class RoleDto {
     private String systemName;
 
     @JsonProperty("access")
-    private AccessDto access;
+    private Set<AccessDto> access;
 }

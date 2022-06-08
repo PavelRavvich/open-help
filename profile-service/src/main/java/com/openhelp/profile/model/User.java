@@ -19,6 +19,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
@@ -37,9 +38,17 @@ import java.util.UUID;
 @Table(name = "users")
 @NamedEntityGraphs({
         @NamedEntityGraph(
-                name = "user[roles]",
+                name = "user.roles.access",
                 attributeNodes = {
-                        @NamedAttributeNode("roles")
+                        @NamedAttributeNode(value = "roles", subgraph = "roles.access")
+                },
+                subgraphs = {
+                        @NamedSubgraph(
+                                name = "roles.access",
+                                attributeNodes = {
+                                        @NamedAttributeNode(value = "access")
+                                }
+                        )
                 })
 })
 public class User {
