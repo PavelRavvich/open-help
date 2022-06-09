@@ -43,15 +43,15 @@ import java.util.UUID;
                         @NamedAttributeNode(value = "roles")
                 }),
         @NamedEntityGraph(
-                name = "user.roles.access",
+                name = "user.roles.accesses",
                 attributeNodes = {
-                        @NamedAttributeNode(value = "roles", subgraph = "roles.access")
+                        @NamedAttributeNode(value = "roles", subgraph = "roles.accesses")
                 },
                 subgraphs = {
                         @NamedSubgraph(
-                                name = "roles.access",
+                                name = "roles.accesses",
                                 attributeNodes = {
-                                        @NamedAttributeNode(value = "access")
+                                        @NamedAttributeNode(value = "accesses")
                                 })
                 })
 })

@@ -32,7 +32,7 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "access")
+@Table(name = "accesses")
 public class Access {
 
     @Id
@@ -50,7 +50,7 @@ public class Access {
     @Enumerated(EnumType.STRING)
     private OperationType operationType;
 
-    @ManyToMany(mappedBy = "access", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "accesses", fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Role> roles;
 

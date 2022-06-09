@@ -1,4 +1,4 @@
-INSERT INTO access (id, title, entity_type, operation_type)
+INSERT INTO accesses (id, title, entity_type, operation_type)
 VALUES (1, 'Create new Role', 'ROLE', 'CREATE'),
        (2, 'Read own Role', 'ROLE', 'READ_OWN'),
        (3, 'Read any Role', 'ROLE', 'READ_ANY'),
@@ -34,4 +34,4 @@ VALUES (1, 'Create new Role', 'ROLE', 'CREATE'),
        (33, 'Update any Group', 'GROUP', 'UPDATE_ANY'),
        (34, 'Delete own Group', 'GROUP', 'DELETE_OWN'),
        (35, 'Delete any Group', 'GROUP', 'DELETE_ANY');
-SELECT setval('access_id_seq', 35);
+SELECT setval('accesses_id_seq', 35);

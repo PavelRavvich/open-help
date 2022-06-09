@@ -38,7 +38,7 @@ public interface RoleMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "users", ignore = true)
-    @Mapping(source = "accessIds", target = "access")
+    @Mapping(source = "accessIds", target = "accesses")
     Role roleRequestDtoToRole(RoleRequestDto role);
 
     RoleItemDto roleToRoleItemDto(Role role);

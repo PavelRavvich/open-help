@@ -25,6 +25,6 @@ public interface UserMapper {
     @Mapping(source = "roleIds", target = "roles")
     UserFilter toUserFilter(UserFilterDto dto);
 
-    @Mapping(target = "roles.access", ignore = true)
+    @Mapping(target = "roles.accesses", ignore = true)
     UserItemDto userToUserItemDto(User user);
 }

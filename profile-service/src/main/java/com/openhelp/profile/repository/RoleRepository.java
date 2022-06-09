@@ -29,7 +29,7 @@ public interface RoleRepository
         extends JpaRepository<Role, Long>, JpaSpecificationExecutor<Role> {
 
     @NotNull
-    @EntityGraph(value = "role.access")
+    @EntityGraph(value = "role.accesses")
     Optional<Role> findById(@NotNull Long id);
 
     Optional<Role> findBySystemName(@NotNull String systemName);

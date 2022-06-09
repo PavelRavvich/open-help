@@ -34,10 +34,10 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
     @NotNull
-    @EntityGraph(value = "user.roles.access", type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(value = "user.roles.accesses", type = EntityGraph.EntityGraphType.LOAD)
     Optional<User> findDistinctById(@NotNull Long userId);
 
-    @EntityGraph(value = "user.roles.access", type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(value = "user.roles.accesses", type = EntityGraph.EntityGraphType.LOAD)
     Optional<User> findDistinctByUsername(@NonNull String username);
 
     @Modifying

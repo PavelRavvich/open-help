@@ -35,9 +35,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "roles")
 @NamedEntityGraph(
-        name = "role.access",
+        name = "role.accesses",
         attributeNodes = {
-                @NamedAttributeNode(value = "access")
+                @NamedAttributeNode(value = "accesses")
         })
 public class Role {
 
@@ -52,11 +52,11 @@ public class Role {
     private String title;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "roles_access",
+    @JoinTable(name = "roles_accesses",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "access_id", referencedColumnName = "id"))
     @ToString.Exclude
-    private Set<Access> access;
+    private Set<Access> accesses;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @ToString.Exclude

@@ -52,7 +52,7 @@ public class SecurityUtils {
         long count = getSecurityContextUser()
                 .getRoles()
                 .stream()
-                .map(Role::getAccess)
+                .map(Role::getAccesses)
                 .flatMap(Collection::stream)
                 .filter(access -> access.getEntityType() == req.getEntityType()
                         && access.getOperationType() == req.getOperationType())
