@@ -1,11 +1,14 @@
 package com.openhelp.profile.controller;
 
 import com.openhelp.profile.dto.ListDto;
+import com.openhelp.profile.dto.access.AccessStatusRequestDto;
+import com.openhelp.profile.dto.access.AccessStatusResponseDto;
 import com.openhelp.profile.dto.auth.SignUpRequestDto;
 import com.openhelp.profile.dto.user.UserDto;
 import com.openhelp.profile.dto.user.UserFilterDto;
 import com.openhelp.profile.dto.user.UserItemDto;
 import com.openhelp.profile.service.UserService;
+import com.openhelp.profile.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +32,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping()
+    @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ListDto<UserItemDto>> list(@NotNull @RequestBody @Valid UserFilterDto filter) {
         return ResponseEntity.ok(userService.list(filter));
@@ -72,5 +75,11 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Long> delete(@NotNull @PathVariable(name = "id") Long userId) {
         return ResponseEntity.ok(userService.delete(userId));
+    }
+
+    @PostMapping("/accessStatus")
+    public ResponseEntity<AccessStatusResponseDto> getStatus(
+            @NotNull @RequestBody AccessStatusRequestDto req) {
+        return ResponseEntity.ok(SecurityUtils.getAccessStatus(req));
     }
 }
