@@ -2,7 +2,7 @@ package com.openhelp.profile.mapper;
 
 import com.google.common.collect.Sets;
 import com.openhelp.profile.dto.access.AccessDto;
-import com.openhelp.profile.dto.access.AccessResponseDto;
+import com.openhelp.profile.dto.access.AccessesDto;
 import com.openhelp.profile.enums.OperationType;
 import com.openhelp.profile.model.Access;
 import org.mapstruct.InjectionStrategy;
@@ -26,12 +26,11 @@ public interface AccessMapper {
 
     AccessDto accessToAccessDto(Access access);
 
+    AccessesDto accessToAccessResponseDto(Long userId, Set<OperationType> operations);
+
     default Set<Access> accessIdsListToAccessList(List<Long> ids) {
         return Objects.isNull(ids)
                 ? Sets.newHashSet()
                 : ids.stream().map(id -> Access.builder().id(id).build()).collect(Collectors.toSet());
     }
-
-
-    AccessResponseDto accessToAccessResponseDto(Long userId, Set<OperationType> operations);
 }

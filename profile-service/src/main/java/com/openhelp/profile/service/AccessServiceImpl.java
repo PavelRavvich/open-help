@@ -1,7 +1,7 @@
 package com.openhelp.profile.service;
 
-import com.openhelp.profile.dto.access.AccessRequestDto;
-import com.openhelp.profile.dto.access.AccessResponseDto;
+import com.openhelp.profile.dto.access.AccessesDto;
+import com.openhelp.profile.enums.EntityType;
 import com.openhelp.profile.enums.OperationType;
 import com.openhelp.profile.mapper.AccessMapper;
 import com.openhelp.profile.model.Access;
@@ -28,14 +28,14 @@ public class AccessServiceImpl implements AccessService {
     private final AccessMapper accessMapper;
 
     @Override
-    public AccessResponseDto getAccesses(@NotNull AccessRequestDto req) {
+    public AccessesDto getAccesses(@NotNull EntityType entityType) {
         User user = SecurityUtils.getSecurityContextUser();
         Set<OperationType> operations = user
                 .getRoles()
                 .stream()
                 .map(Role::getAccesses)
                 .flatMap(Collection::stream)
-                .filter(access -> access.getEntityType() == req.getEntityType())
+                .filter(access -> entityType == access.getEntityType())
                 .map(Access::getOperationType)
                 .collect(Collectors.toSet());
         return accessMapper.accessToAccessResponseDto(user.getId(), operations);

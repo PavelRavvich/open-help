@@ -1,11 +1,11 @@
 package com.openhelp.profile.service;
 
-import com.openhelp.profile.dto.access.AccessRequestDto;
-import com.openhelp.profile.dto.access.AccessResponseDto;
+import com.openhelp.profile.dto.access.AccessesDto;
+import com.openhelp.profile.enums.EntityType;
 
 /**
  * @author Pavel Ravvich.
  */
 public interface AccessService {
-    AccessResponseDto getAccesses(AccessRequestDto req);
+    AccessesDto getAccesses(EntityType req);
 }

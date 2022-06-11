@@ -1,7 +1,7 @@
 package com.openhelp.profile.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openhelp.profile.dto.access.AccessResponseDto;
+import com.openhelp.profile.dto.access.AccessesDto;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
@@ -32,11 +32,11 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(@NotNull FormatterRegistry registry) {
-        registry.addConverter(new Converter<String, AccessResponseDto>() {
+        registry.addConverter(new Converter<String, AccessesDto>() {
             @SneakyThrows
             @Override
-            public AccessResponseDto convert(@NotNull String json) {
-                return mapper.readValue(json, AccessResponseDto.class);
+            public AccessesDto convert(@NotNull String json) {
+                return mapper.readValue(json, AccessesDto.class);
             }
         });
     }
