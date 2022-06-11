@@ -90,13 +90,13 @@ public class FilterConfig {
                 .request(exchange
                         .getRequest()
                         .mutate()
-                        .header(ACCESS_CONTROL_REQUEST_HEADERS, toHeader(accesses))
+                        .header(ACCESS_CONTROL_REQUEST_HEADERS, json(accesses))
                         .build())
                 .build();
     }
 
     @SneakyThrows
-    private String toHeader(@NotNull AccessesDto response) {
+    private String json(@NotNull AccessesDto response) {
         return mapper.writeValueAsString(response);
     }
 
