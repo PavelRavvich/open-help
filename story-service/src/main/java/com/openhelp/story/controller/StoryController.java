@@ -1,5 +1,6 @@
 package com.openhelp.story.controller;
 
+import com.openhelp.story.dto.AccessesDto;
 import com.openhelp.story.dto.ListDto;
 import com.openhelp.story.dto.story.StoryDto;
 import com.openhelp.story.dto.story.StoryFilterDto;
@@ -8,51 +9,67 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS;
 
 /**
  * @author Pavel Ravvich.
  */
 @Slf4j
-@RestController
+@RestController("stories")
 @RequiredArgsConstructor
 public class StoryController {
 
     private final StoryService storyService;
 
-    @PostMapping
-    public ResponseEntity<ListDto<StoryDto>> list(@NotNull @RequestBody @Valid StoryFilterDto filter) {
-        log.debug("Get story list by filter: {}", filter);
+    @GetMapping
+    public ResponseEntity<ListDto<StoryDto>> list(
+            @NotNull @RequestBody @Valid StoryFilterDto filter,
+            @NotNull @RequestHeader(name = ACCESS_CONTROL_REQUEST_HEADERS) AccessesDto accesses) {
+        log.debug("Get Story list by filter: {}", filter);
         return ResponseEntity.ok(storyService.getList(filter));
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<StoryDto> get(@NotNull @PathVariable(name = "id") Long storyId) {
-        log.debug("Get story by id: {}", storyId);
+    @GetMapping("/{id}")
+    public ResponseEntity<StoryDto> get(
+            @NotNull @PathVariable(name = "id") Long storyId,
+            @NotNull @RequestHeader(name = ACCESS_CONTROL_REQUEST_HEADERS) AccessesDto accesses) {
+        log.debug("Get Story by id: {}", storyId);
         return ResponseEntity.ok(storyService.findById(storyId));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Long> create(@NotNull @RequestBody @Valid StoryDto story) {
-        log.debug("Create story: {}", story);
+    public ResponseEntity<Long> create(
+            @NotNull @RequestBody @Valid StoryDto story,
+            @NotNull @RequestHeader(name = ACCESS_CONTROL_REQUEST_HEADERS) AccessesDto accesses) {
+        log.debug("Create Story: {}", story);
         return ResponseEntity.ok(storyService.create(story));
     }
 
-    @PostMapping("/{id}/update")
-    public ResponseEntity<Long> create(@NotNull @PathVariable(name = "id") Long storyId,
-                                       @NotNull @RequestBody @Valid StoryDto story) {
-        log.debug("Update story id: {}, {}", storyId, story);
-        return ResponseEntity.ok(storyService.update(storyId, story));
+    @PutMapping("/{id}/update")
+    public ResponseEntity<Long> update(
+            @NotNull @PathVariable(name = "id") Long id,
+            @NotNull @RequestBody @Valid StoryDto story,
+            @NotNull @RequestHeader(name = ACCESS_CONTROL_REQUEST_HEADERS) AccessesDto accesses) {
+        log.debug("Update story id: {}, {}", id, story);
+        return ResponseEntity.ok(storyService.update(id, story));
     }
 
-    @PostMapping("/{id}/delete")
-    public ResponseEntity<Long> delete(@NotNull @PathVariable(name = "id") Long storyId) {
-        log.debug("Delete story id: {}", storyId);
-        return ResponseEntity.ok(storyService.delete(storyId));
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Long> delete(
+            @NotNull @PathVariable(name = "id") Long id,
+            @NotNull @RequestHeader(name = ACCESS_CONTROL_REQUEST_HEADERS) AccessesDto accesses) {
+        log.debug("Delete Story by id: {}", id);
+        return ResponseEntity.ok(storyService.delete(id));
     }
 }

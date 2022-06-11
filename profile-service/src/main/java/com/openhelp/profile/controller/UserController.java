@@ -1,7 +1,6 @@
 package com.openhelp.profile.controller;
 
 import com.openhelp.profile.dto.ListDto;
-import com.openhelp.profile.dto.access.AccessResponseDto;
 import com.openhelp.profile.dto.auth.SignUpRequestDto;
 import com.openhelp.profile.dto.user.UserDto;
 import com.openhelp.profile.dto.user.UserFilterDto;
@@ -9,17 +8,17 @@ import com.openhelp.profile.dto.user.UserItemDto;
 import com.openhelp.profile.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Map;
+
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS;
 
 /**
  * @author Pavel Ravvich.
@@ -37,9 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<UserDto> get(
-            @NotNull @PathVariable(name = "id") Long id,
-            @NotNull @RequestHeader(name = HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS) AccessResponseDto credentials) {
+    public ResponseEntity<UserDto> get(@NotNull @PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(userService.findById(id));
     }
 

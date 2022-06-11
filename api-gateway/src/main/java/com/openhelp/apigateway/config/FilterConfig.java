@@ -35,15 +35,13 @@ public class FilterConfig {
     private final static String ACCESS_URL = "http://profile/accesses";
 
     private final Map<String, String> patterns = Map.of(
-            "users", EntityType.USER.getType(),
-            "roles", EntityType.ROLE.getType(),
             "sos", EntityType.SOS.getType(),
             "stories", EntityType.STORY.getType(),
             "groups", EntityType.GROUP.getType());
 
     @Bean
     @LoadBalanced
-    public WebClient.Builder loadBalancedWebClientBuilder() {
+    public WebClient.Builder clientBuilder() {
         return WebClient.builder();
     }
 
@@ -66,7 +64,7 @@ public class FilterConfig {
     private Mono<Void> doFilter(@NotNull String pattern,
                                 @NotNull GatewayFilterChain chain,
                                 @NotNull ServerWebExchange exchange) {
-        return loadBalancedWebClientBuilder()
+        return clientBuilder()
                 .build()
                 .get()
                 .uri(String.format("%s/%s", ACCESS_URL, patterns.get(pattern)))
