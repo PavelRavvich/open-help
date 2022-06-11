@@ -1,22 +1,29 @@
 package com.openhelp.apigateway.config;
 
-import com.openhelp.apigateway.dto.AccessStatusRequestDto;
-import com.openhelp.apigateway.dto.AccessStatusResponseDto;
-import com.openhelp.apigateway.enums.AccessStatusType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openhelp.apigateway.dto.AccessRequestDto;
+import com.openhelp.apigateway.dto.AccessResponseDto;
 import com.openhelp.apigateway.enums.EntityType;
-import com.openhelp.apigateway.enums.OperationType;
-import org.hibernate.validator.constraints.Mod11Check;
+import lombok.SneakyThrows;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 /**
  * @author Pavel Ravvich.
@@ -24,38 +31,12 @@ import java.util.Objects;
 @Configuration
 public class FilterConfig {
 
-    @Bean
-    public GlobalFilter customGlobalFilter() {
-        return (exchange, chain) -> {
-            String path = exchange.getRequest().getURI().getPath();
-            if (path.contains("login") || path.contains("registration")) {
-                throw new RuntimeException("Access denied");
-            }
-            AccessStatusRequestDto body = AccessStatusRequestDto.builder()
-                    .entityType(EntityType.USER)
-                    .operationType(OperationType.READ_ANY)
-                    .build();
-            HttpHeaders headers = exchange.getRequest().getHeaders();
-            String authorization = Objects.requireNonNull(headers.get("Authorization")).get(0);
-            String contentType = Objects.requireNonNull(headers.get("Content-Type")).get(0);
-            WebClient client = loadBalancedWebClientBuilder().build();
-            return client
-                    .post()
-                    .uri("http://profile/users/accessStatus")
-                    .body(Mono.just(body), new ParameterizedTypeReference<>() {})
-                    .header("Authorization", authorization)
-                    .header("Content-Type", contentType)
-                    .retrieve()
-                    .bodyToMono(AccessStatusResponseDto.class)
-                    .timeout(Duration.ofMillis(5000))
-                    .map(accessStatus -> {
-                        if (accessStatus.getAccessStatus() != AccessStatusType.OPEN) {
-                            throw new RuntimeException("Access denied");
-                        }
-                        return exchange;
-                    }).flatMap(chain::filter);
-        };
-    }
+    private final Map<String, EntityType> urlPatternToEntity = Map.of(
+            "users", EntityType.USER,
+            "roles", EntityType.ROLE,
+            "sos", EntityType.SOS,
+            "stories", EntityType.STORY,
+            "groups", EntityType.GROUP);
 
     @Bean
     @LoadBalanced
@@ -63,4 +44,54 @@ public class FilterConfig {
         return WebClient.builder();
     }
 
+    @Bean
+    public GlobalFilter customGlobalFilter() {
+        return (exchange, chain) -> {
+            for (String pattern : urlPatternToEntity.keySet()) {
+                if (exchange.getRequest().getURI().getPath().contains(pattern)) {
+                    return filter(pattern, chain, exchange);
+                }
+            }
+            return chain.filter(exchange);
+        };
+    }
+
+    private Mono<Void> filter(String pattern,
+                              GatewayFilterChain chain,
+                              ServerWebExchange exchange) {
+        Mono<AccessRequestDto> body = Mono.just(AccessRequestDto.builder()
+                .entityType(urlPatternToEntity.get(pattern)).build());
+        return loadBalancedWebClientBuilder().build()
+                .post().uri("http://profile/accesses")
+                .body((body), new ParameterizedTypeReference<>() {})
+                .header(AUTHORIZATION, getHeader(AUTHORIZATION, exchange))
+                .header(CONTENT_TYPE, getHeader(CONTENT_TYPE, exchange))
+                .retrieve().bodyToMono(AccessResponseDto.class)
+                .timeout(Duration.ofMillis(5000))
+                .map(response -> {
+                    if (response.getOperations().isEmpty()) {
+                        throw new RuntimeException("Access denied");
+                    }
+                    ServerHttpRequest request = exchange.getRequest()
+                            .mutate()
+                            .header(ACCESS_CONTROL_ALLOW_CREDENTIALS, toHeader(response))
+                            .build();
+                    return exchange.mutate().request(request).build();
+                }).flatMap(chain::filter);
+    }
+
+    @SneakyThrows
+    String toHeader(AccessResponseDto response) {
+        return new ObjectMapper().writeValueAsString(response);
+    }
+
+    private String getHeader(String headerName, ServerWebExchange exchange) {
+        List<String> headers = exchange.getRequest().getHeaders().get(headerName);
+        if (Objects.isNull(headers) || headers.isEmpty()) {
+            throw new RuntimeException(
+                    String.format("Bad request header %s required", headerName)
+            );
+        }
+        return headers.get(0);
+    }
 }
