@@ -5,20 +5,24 @@ import com.openhelp.profile.dto.auth.SignUpRequestDto;
 import com.openhelp.profile.dto.user.UserDto;
 import com.openhelp.profile.dto.user.UserFilterDto;
 import com.openhelp.profile.dto.user.UserItemDto;
+import com.openhelp.profile.dto.user.UserNicknameUpdateRequest;
+import com.openhelp.profile.dto.user.UserPasswordUpdateRequest;
 import com.openhelp.profile.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Map;
-
-import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS;
 
 /**
  * @author Pavel Ravvich.
@@ -30,40 +34,40 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<ListDto<UserItemDto>> list(@NotNull @RequestBody @Valid UserFilterDto filter) {
         return ResponseEntity.ok(userService.list(filter));
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<UserDto> get(@NotNull @PathVariable(name = "id") Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getById(@NotNull @PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(userService.findById(id));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Long> create(@NotNull @RequestBody @Valid SignUpRequestDto req) {
         return ResponseEntity.ok(userService.create(req));
     }
 
-    @PostMapping("/{id}/update")
+    @PutMapping("/{id}")
     public ResponseEntity<Long> update(@NotNull @PathVariable(name = "id") Long userId,
                                        @NotNull @RequestBody @Valid SignUpRequestDto req) {
         return ResponseEntity.ok(userService.update(userId, req));
     }
 
-    @PostMapping("/{id}/update/password")
+    @PatchMapping("/{id}/password")
     public ResponseEntity<Long> updatePassword(@NotNull @PathVariable(name = "id") Long userId,
-                                               @NotNull @RequestBody Map<String, String> req) {
-        return ResponseEntity.ok(userService.updatePassword(userId, req.get("oldPassword"), req.get("newPassword")));
+                                               @NotNull @RequestBody UserPasswordUpdateRequest req) {
+        return ResponseEntity.ok(userService.updatePassword(userId, req.getOldPassword(), req.getNewPassword()));
     }
 
-    @PostMapping("/{id}/update/nickname")
+    @PatchMapping("/{id}/nickname")
     public ResponseEntity<Long> updateNickname(@NotNull @PathVariable(name = "id") Long userId,
-                                               @NotNull @RequestBody Map<String, String> req) {
-        return ResponseEntity.ok(userService.updateNickname(userId, req.get("nickname")));
+                                               @NotNull @RequestBody @Valid UserNicknameUpdateRequest req) {
+        return ResponseEntity.ok(userService.updateNickname(userId, req.getNickname()));
     }
 
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@NotNull @PathVariable(name = "id") Long userId) {
         return ResponseEntity.ok(userService.delete(userId));
     }
