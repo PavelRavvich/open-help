@@ -31,19 +31,19 @@ spring:
             - Path=/api/v1/dictionary/**
           uri: lb://dictionary
         - predicates:
-            - Path=/api/v1/sos/** # signals/
+            - Path=/api/v1/sos/**
           uri: lb://sos
         - predicates:
-            - Path=/api/v1/story/** # /tasks/subtask
+            - Path=/api/v1/story/**
           uri: lb://story
         - predicates:
-            - Path=/api/v1/group/** # /events/
+            - Path=/api/v1/group/**
           uri: lb://group
         - predicates:
-            - Path=/api/v1/message/** # /room
+            - Path=/api/v1/message/**
           uri: lb://message
         - predicates:
-            - Path=/api/v1/notification/** # /group, message, sos, story
+            - Path=/api/v1/notification/**
           uri: lb://notification
         - predicates:
             - Path=/api/v1/mail/**

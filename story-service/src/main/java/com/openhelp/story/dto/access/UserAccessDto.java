@@ -1,8 +1,7 @@
-package com.openhelp.apigateway.dto;
+package com.openhelp.story.dto.access;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.openhelp.apigateway.enums.OperationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,11 +17,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AccessesDto {
+public class UserAccessDto {
 
     @JsonProperty("userId")
     private Long userId;
 
-    @JsonProperty("operations")
-    private Set<OperationType> operations;
+    @JsonProperty("accesses")
+    private Set<AccessDto> accesses;
 }

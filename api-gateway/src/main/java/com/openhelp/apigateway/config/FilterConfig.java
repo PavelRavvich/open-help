@@ -1,9 +1,7 @@
 package com.openhelp.apigateway.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openhelp.apigateway.dto.AccessesDto;
-import com.openhelp.apigateway.enums.EntityType;
-import com.openhelp.apigateway.validation.AccessDeniedException;
+import com.openhelp.apigateway.dto.UserAccessDto;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -17,8 +15,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -34,10 +32,8 @@ public class FilterConfig {
 
     private final static String ACCESS_URL = "http://profile/accesses";
 
-    private final Map<String, String> patterns = Map.of(
-            "sos", EntityType.SOS.getType(),
-            "stories", EntityType.STORY.getType(),
-            "groups", EntityType.GROUP.getType());
+    private final Set<String> unauthorizedUrlPatterns =
+            Set.of("login", "health", "checkToken", "registration", "users", "roles");
 
     @Bean
     @LoadBalanced
@@ -47,55 +43,43 @@ public class FilterConfig {
 
     @Bean
     public GlobalFilter authFilter() {
-        return (exchange, chain) ->
-                patterns.keySet()
-                        .stream()
-                        .filter(pattern -> exchange
-                                .getRequest()
-                                .getURI()
-                                .getPath()
-                                .contains(pattern))
-                        .findFirst()
-                        .map(pattern -> doFilter(pattern, chain, exchange))
-                        .orElse(chain.filter(exchange));
+        return (exchange, chain) -> {
+            String path = exchange.getRequest().getURI().getPath();
+            for (String pattern : unauthorizedUrlPatterns) {
+                if (path.contains(pattern)) {
+                    return chain.filter(exchange);
+                }
+            }
+            return doFilter(chain, exchange);
+        };
     }
 
     @NotNull
-    private Mono<Void> doFilter(@NotNull String pattern,
-                                @NotNull GatewayFilterChain chain,
+    private Mono<Void> doFilter(@NotNull GatewayFilterChain chain,
                                 @NotNull ServerWebExchange exchange) {
         return clientBuilder()
                 .build()
                 .get()
-                .uri(String.format("%s/%s", ACCESS_URL, patterns.get(pattern)))
+                .uri(ACCESS_URL)
                 .header(AUTHORIZATION, getHeader(AUTHORIZATION, exchange))
                 .header(CONTENT_TYPE, getHeader(CONTENT_TYPE, exchange))
-                .retrieve().bodyToMono(AccessesDto.class)
+                .retrieve().bodyToMono(UserAccessDto.class)
                 .timeout(Duration.ofMillis(5000))
-                .map(response -> getServerWebExchange(pattern, response, exchange))
+                .map(response -> getServerWebExchange(response, exchange))
                 .flatMap(chain::filter);
     }
 
     @NotNull
-    private ServerWebExchange getServerWebExchange(@NotNull String pattern,
-                                                   @NotNull AccessesDto accesses,
+    private ServerWebExchange getServerWebExchange(@NotNull UserAccessDto accessesResponse,
                                                    @NotNull ServerWebExchange exchange) {
-        if (accesses.getOperations().isEmpty()) {
-            throw new AccessDeniedException(pattern);
-        }
         return exchange
                 .mutate()
                 .request(exchange
                         .getRequest()
                         .mutate()
-                        .header(ACCESS_CONTROL_REQUEST_HEADERS, json(accesses))
+                        .header(ACCESS_CONTROL_REQUEST_HEADERS, asString(accessesResponse))
                         .build())
                 .build();
-    }
-
-    @SneakyThrows
-    private String json(@NotNull AccessesDto response) {
-        return mapper.writeValueAsString(response);
     }
 
     @NotNull
@@ -110,5 +94,10 @@ public class FilterConfig {
             );
         }
         return headers.get(0);
+    }
+
+    @SneakyThrows
+    private String asString(@NotNull UserAccessDto response) {
+        return mapper.writeValueAsString(response);
     }
 }

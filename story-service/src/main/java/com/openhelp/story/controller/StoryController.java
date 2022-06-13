@@ -1,6 +1,5 @@
 package com.openhelp.story.controller;
 
-import com.openhelp.story.dto.AccessesDto;
 import com.openhelp.story.dto.ListDto;
 import com.openhelp.story.dto.story.StoryDto;
 import com.openhelp.story.dto.story.StoryFilterDto;
@@ -15,60 +14,47 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-
-import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS;
 
 /**
  * @author Pavel Ravvich.
  */
 @Slf4j
-@RestController("stories")
+@RestController
 @RequiredArgsConstructor
 public class StoryController {
 
     private final StoryService storyService;
 
     @GetMapping
-    public ResponseEntity<ListDto<StoryDto>> list(
-            @NotNull @RequestBody @Valid StoryFilterDto filter,
-            @NotNull @RequestHeader(name = ACCESS_CONTROL_REQUEST_HEADERS) AccessesDto accesses) {
+    public ResponseEntity<ListDto<StoryDto>> list(@NotNull @RequestBody @Valid StoryFilterDto filter) {
         log.debug("Get Story list by filter: {}", filter);
         return ResponseEntity.ok(storyService.getList(filter));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StoryDto> get(
-            @NotNull @PathVariable(name = "id") Long storyId,
-            @NotNull @RequestHeader(name = ACCESS_CONTROL_REQUEST_HEADERS) AccessesDto accesses) {
+    public ResponseEntity<StoryDto> get(@NotNull @PathVariable(name = "id") Long storyId) {
         log.debug("Get Story by id: {}", storyId);
         return ResponseEntity.ok(storyService.findById(storyId));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Long> create(
-            @NotNull @RequestBody @Valid StoryDto story,
-            @NotNull @RequestHeader(name = ACCESS_CONTROL_REQUEST_HEADERS) AccessesDto accesses) {
+    public ResponseEntity<Long> create(@NotNull @RequestBody @Valid StoryDto story) {
         log.debug("Create Story: {}", story);
         return ResponseEntity.ok(storyService.create(story));
     }
 
     @PutMapping("/{id}/update")
-    public ResponseEntity<Long> update(
-            @NotNull @PathVariable(name = "id") Long id,
-            @NotNull @RequestBody @Valid StoryDto story,
-            @NotNull @RequestHeader(name = ACCESS_CONTROL_REQUEST_HEADERS) AccessesDto accesses) {
+    public ResponseEntity<Long> update(@NotNull @PathVariable(name = "id") Long id,
+                                       @NotNull @RequestBody @Valid StoryDto story) {
         log.debug("Update story id: {}, {}", id, story);
         return ResponseEntity.ok(storyService.update(id, story));
     }
 
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Long> delete(
-            @NotNull @PathVariable(name = "id") Long id,
-            @NotNull @RequestHeader(name = ACCESS_CONTROL_REQUEST_HEADERS) AccessesDto accesses) {
+    public ResponseEntity<Long> delete(@NotNull @PathVariable(name = "id") Long id) {
         log.debug("Delete Story by id: {}", id);
         return ResponseEntity.ok(storyService.delete(id));
     }

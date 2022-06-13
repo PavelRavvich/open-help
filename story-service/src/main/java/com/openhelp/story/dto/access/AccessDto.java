@@ -1,28 +1,25 @@
-package com.openhelp.story.dto;
+package com.openhelp.story.dto.access;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.openhelp.story.enums.EntityType;
 import com.openhelp.story.enums.OperationType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 /**
  * @author Pavel Ravvich.
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AccessesDto {
+public class AccessDto {
 
-    @JsonProperty("userId")
-    private Long userId;
+    @JsonProperty("entityType")
+    private EntityType entityType;
 
-    @JsonProperty("operations")
-    private Set<OperationType> operations;
+    @JsonProperty("operationType")
+    private OperationType operationType;
 }

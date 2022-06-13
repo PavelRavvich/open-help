@@ -1,4 +1,4 @@
-package com.openhelp.apigateway.enums;
+package com.openhelp.story.enums;
 
 /**
  * @author Pavel Ravvich.
@@ -8,9 +8,7 @@ public enum EntityType {
     ROLE("ROLE"),
     SOS("SOS"),
     STORY("STORY"),
-    GROUP("GROUP"),
-    MESSAGE("MESSAGE"),
-    NOTIFICATION("NOTIFICATION");
+    GROUP("GROUP");
 
     public final String value;
 
