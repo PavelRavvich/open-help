@@ -1,16 +1,23 @@
 package com.openhelp.story.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openhelp.story.dto.ListDto;
 import com.openhelp.story.dto.story.StoryDto;
 import com.openhelp.story.dto.story.StoryFilterDto;
+import com.openhelp.story.enums.EntityType;
+import com.openhelp.story.enums.OperationType;
 import com.openhelp.story.mapper.StoryMapper;
 import com.openhelp.story.model.Story;
 import com.openhelp.story.repository.StoryRepository;
 import com.openhelp.story.repository.filter.StoryFilter;
+import com.openhelp.story.utils.SecurityUtils.AccessDto;
+import com.openhelp.story.utils.SecurityUtils.UserAccessDto;
 import com.openhelp.story.validation.NoSuchStoryException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,8 +26,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -53,6 +64,36 @@ public class StoryServiceTest {
 
     String title = "title";
 
+    @BeforeEach
+    public void before() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        AccessDto create = AccessDto.builder()
+                .entityType(EntityType.STORY)
+                .operationType(OperationType.CREATE)
+                .build();
+        AccessDto readAny = AccessDto.builder()
+                .entityType(EntityType.STORY)
+                .operationType(OperationType.READ_ANY)
+                .build();
+        AccessDto updateAny = AccessDto.builder()
+                .entityType(EntityType.STORY)
+                .operationType(OperationType.UPDATE_ANY)
+                .build();
+        AccessDto deleteAny = AccessDto.builder()
+                .entityType(EntityType.STORY)
+                .operationType(OperationType.DELETE_ANY)
+                .build();
+        UserAccessDto userAccess = new UserAccessDto(
+                1L, List.of(create, readAny, updateAny, deleteAny));
+        try {
+            String json = new ObjectMapper().writeValueAsString(userAccess);
+            request.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS, json);
+            RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Test
     @DisplayName("Get story list")
     public void whenGetListThenReturnListDto() {
@@ -64,10 +105,8 @@ public class StoryServiceTest {
         filterDto.setTitle(title);
         StoryFilter storyFilter = new StoryFilter();
         storyFilter.setTitle(title);
-        given(storyMapper.storyFilterDtoToStoryFilter(filterDto))
-                .willReturn(storyFilter);
-        Page<Story> page = new PageImpl<>(List.of(story),
-                PageRequest.of(0, 1), 1);
+        given(storyMapper.storyFilterDtoToStoryFilter(filterDto)).willReturn(storyFilter);
+        Page<Story> page = new PageImpl<>(List.of(story), PageRequest.of(0, 1), 1);
         given(storyRepository.findAll(
                 any(StorySpecification.class), any(Pageable.class))
         ).willReturn(page);
@@ -136,7 +175,7 @@ public class StoryServiceTest {
     public void whenUpdateStorySuccessfullyThenReturnUpdatedStoryId() {
         StoryDto storyDto = StoryDto.builder().title(title).build();
         Story story = Story.builder().title(title).build();
-        given(storyRepository.existsById(id)).willReturn(true);
+        given(storyRepository.findById(id)).willReturn(Optional.of(Story.builder().build()));
         given(storyMapper.storyDtoToStory(storyDto)).willReturn(story);
 
         Long actualId = storyService.update(id, storyDto);
@@ -161,7 +200,7 @@ public class StoryServiceTest {
     @Test
     @DisplayName("Delete story success")
     public void whenDeleteStorySuccessfullyThenReturnStoryId() {
-        given(storyRepository.existsById(id)).willReturn(true);
+        given(storyRepository.findById(id)).willReturn(Optional.of(Story.builder().build()));
 
         Long actualId = storyService.delete(id);
 
@@ -173,7 +212,7 @@ public class StoryServiceTest {
     @Test
     @DisplayName("Delete story not exist")
     public void whenDeleteNotExistedStoryThenThrowNoSuchStoryException() {
-        given(storyRepository.existsById(id)).willReturn(false);
+        given(storyRepository.findById(id)).willReturn(Optional.empty());
 
         assertThrows(NoSuchStoryException.class,
                 () -> storyService.delete(id), "");

@@ -47,8 +47,8 @@ public class StoryDto {
     @JsonProperty("deletedAt")
     private Long deletedAt;
 
-    @JsonProperty("authorId")
-    private Long authorId;
+    @JsonProperty("userId")
+    private Long userId;
 
     @JsonProperty("currentLocationId")
     private Long currentLocationId;

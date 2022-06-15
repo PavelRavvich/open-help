@@ -41,15 +41,20 @@ public interface StoryRepository
             Predicate predicate = builder.conjunction();
             List<Expression<Boolean>> exps = predicate.getExpressions();
 
+            filter.getUserId().ifPresent(userId ->
+                    exps.add(builder.equal(root.get("userId"), userId)));
             filter.getTitle().ifPresent(title ->
                     exps.add(builder.like(builder.lower(root.get("title")), Utils.toLikeLower(title))));
-            filter.getStatus().ifPresent(status -> exps.add(builder.equal(root.get("status"), status)));
-            filter.getType().ifPresent(type -> exps.add(builder.equal(root.get("type"), type)));
-
-            filter.getCurrentLocationId().ifPresent(id -> exps.add(builder.equal(root.get("currentLocationId"), id)));
-            filter.getExodusLocationId().ifPresent(id -> exps.add(builder.equal(root.get("exodusLocationId"), id)));
-            filter.getTargetLocationId().ifPresent(id -> exps.add(builder.equal(root.get("targetLocationId"), id)));
-
+            filter.getStatus().ifPresent(status ->
+                    exps.add(builder.equal(root.get("status"), status)));
+            filter.getType().ifPresent(type ->
+                    exps.add(builder.equal(root.get("type"), type)));
+            filter.getCurrentLocationId().ifPresent(id ->
+                    exps.add(builder.equal(root.get("currentLocationId"), id)));
+            filter.getExodusLocationId().ifPresent(id ->
+                    exps.add(builder.equal(root.get("exodusLocationId"), id)));
+            filter.getTargetLocationId().ifPresent(id ->
+                    exps.add(builder.equal(root.get("targetLocationId"), id)));
             filter.getCreatedFrom().ifPresent(createdFrom ->
                     exps.add(builder.greaterThanOrEqualTo(root.get("createdAt"), createdFrom)));
             filter.getCreatedTo().ifPresent(createdTo ->

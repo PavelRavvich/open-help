@@ -18,6 +18,9 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StoryFilterDto extends FilterDto {
 
+    @JsonProperty("userId")
+    private Long userId;
+
     @JsonProperty("title")
     private String title;
 

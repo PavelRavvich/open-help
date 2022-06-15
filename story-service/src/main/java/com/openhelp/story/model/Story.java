@@ -59,8 +59,8 @@ public class Story {
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
 
-    @Column(name = "author_id")
-    private Long authorId;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "current_location_id")
     private Long currentLocationId;
@@ -90,7 +90,7 @@ public class Story {
         if (!createdAt.equals(story.createdAt)) return false;
         if (!updatedAt.equals(story.updatedAt)) return false;
         if (!closedAt.equals(story.closedAt)) return false;
-        if (!authorId.equals(story.authorId)) return false;
+        if (!userId.equals(story.userId)) return false;
         if (!currentLocationId.equals(story.currentLocationId)) return false;
         if (!exodusLocationId.equals(story.exodusLocationId)) return false;
         return targetLocationId.equals(story.targetLocationId);
@@ -106,7 +106,7 @@ public class Story {
         result = 31 * result + createdAt.hashCode();
         result = 31 * result + updatedAt.hashCode();
         result = 31 * result + closedAt.hashCode();
-        result = 31 * result + authorId.hashCode();
+        result = 31 * result + userId.hashCode();
         result = 31 * result + currentLocationId.hashCode();
         result = 31 * result + exodusLocationId.hashCode();
         result = 31 * result + targetLocationId.hashCode();

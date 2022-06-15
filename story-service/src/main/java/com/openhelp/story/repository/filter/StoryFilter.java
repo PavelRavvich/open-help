@@ -17,6 +17,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class StoryFilter {
 
+    private Long userId;
+
     private String title;
 
     private String type;
@@ -44,6 +46,10 @@ public class StoryFilter {
     private Long exodusLocationId;
 
     private Long targetLocationId;
+
+    public Optional<Long> getUserId() {
+        return Optional.ofNullable(userId);
+    }
 
     public Optional<String> getTitle() {
         return Optional.ofNullable(title);
