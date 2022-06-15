@@ -19,12 +19,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * // TODO make as a @Service bean and mock return.
  * @author Pavel Ravvich.
  */
 public class SecurityUtils {
 
-    public static boolean is(EntityType entity, OperationType operation) {
+    public static boolean is(OperationType operation, EntityType entity) {
         if (Objects.isNull(entity) || Objects.isNull(operation)) {
             throw new IllegalArgumentException();
         }

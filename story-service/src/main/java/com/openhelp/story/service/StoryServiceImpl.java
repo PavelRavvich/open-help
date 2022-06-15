@@ -57,8 +57,8 @@ public class StoryServiceImpl implements StoryService {
     }
 
     private void setFilteringAccessLevel(@NotNull StoryFilter filter) {
-        boolean isReadAnyStory = SecurityUtils.is(EntityType.STORY, OperationType.READ_ANY);
-        boolean isReadOwnStory = SecurityUtils.is(EntityType.STORY, OperationType.READ_OWN);
+        boolean isReadAnyStory = SecurityUtils.is(OperationType.READ_ANY, EntityType.STORY);
+        boolean isReadOwnStory = SecurityUtils.is(OperationType.READ_OWN, EntityType.STORY);
         if (!isReadOwnStory && !isReadAnyStory) {
             throw new AccessDeniedException();
         } else if (isReadOwnStory && !isReadAnyStory) {
@@ -72,8 +72,8 @@ public class StoryServiceImpl implements StoryService {
                 storyRepository.findById(id)
                         .orElseThrow(NoSuchStoryException::new));
         boolean isOwn = SecurityUtils.getUserAccess().getUserId().equals(story.getUserId());
-        boolean isReadOwnStory = SecurityUtils.is(EntityType.STORY, OperationType.READ_OWN);
-        boolean isReadAnyStory = SecurityUtils.is(EntityType.STORY, OperationType.READ_ANY);
+        boolean isReadOwnStory = SecurityUtils.is(OperationType.READ_OWN, EntityType.STORY);
+        boolean isReadAnyStory = SecurityUtils.is(OperationType.READ_ANY, EntityType.STORY);
         if (!isReadAnyStory && !(isOwn && isReadOwnStory)) {
             throw new AccessDeniedException();
         }
@@ -83,7 +83,7 @@ public class StoryServiceImpl implements StoryService {
 
     @Override
     public Long create(@NotNull StoryDto storyDto) {
-        if (!SecurityUtils.is(EntityType.STORY, OperationType.CREATE)) {
+        if (!SecurityUtils.is(OperationType.CREATE, EntityType.STORY)) {
             throw new AccessDeniedException();
         }
         Long id = storyRepository.save(storyMapper.storyDtoToStory(storyDto)).getId();
@@ -96,8 +96,8 @@ public class StoryServiceImpl implements StoryService {
     public Long update(@NotNull Long id, @NotNull StoryDto dto) {
         Story story = storyRepository.findById(id).orElseThrow(NoSuchStoryException::new);
         boolean isOwn = SecurityUtils.getUserAccess().getUserId().equals(story.getUserId());
-        boolean isUpdateOwnStory = SecurityUtils.is(EntityType.STORY, OperationType.UPDATE_OWN);
-        boolean isUpdateAnyStory = SecurityUtils.is(EntityType.STORY, OperationType.UPDATE_ANY);
+        boolean isUpdateOwnStory = SecurityUtils.is(OperationType.UPDATE_OWN, EntityType.STORY);
+        boolean isUpdateAnyStory = SecurityUtils.is(OperationType.UPDATE_ANY, EntityType.STORY);
         if (!isUpdateAnyStory && !(isOwn && isUpdateOwnStory)) {
             throw new AccessDeniedException();
         }
@@ -112,8 +112,8 @@ public class StoryServiceImpl implements StoryService {
     public Long delete(@NotNull Long id) {
         Story story = storyRepository.findById(id).orElseThrow(NoSuchStoryException::new);
         boolean isOwn = SecurityUtils.getUserAccess().getUserId().equals(story.getUserId());
-        boolean isDeleteOwnStory = SecurityUtils.is(EntityType.STORY, OperationType.DELETE_OWN);
-        boolean isDeleteAnyStory = SecurityUtils.is(EntityType.STORY, OperationType.DELETE_ANY);
+        boolean isDeleteOwnStory = SecurityUtils.is(OperationType.DELETE_OWN, EntityType.STORY);
+        boolean isDeleteAnyStory = SecurityUtils.is(OperationType.DELETE_ANY, EntityType.STORY);
         if (!isDeleteAnyStory && !(isOwn && isDeleteOwnStory)) {
             throw new AccessDeniedException();
         }
