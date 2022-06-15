@@ -13,6 +13,7 @@ import com.openhelp.story.repository.StoryRepository;
 import com.openhelp.story.repository.filter.StoryFilter;
 import com.openhelp.story.utils.SecurityUtils.AccessDto;
 import com.openhelp.story.utils.SecurityUtils.UserAccessDto;
+import com.openhelp.story.validation.ConcurrentUpdatedException;
 import com.openhelp.story.validation.NoSuchStoryException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -173,9 +174,11 @@ public class StoryServiceTest {
     @Test
     @DisplayName("Update story success")
     public void whenUpdateStorySuccessfullyThenReturnUpdatedStoryId() {
-        StoryDto storyDto = StoryDto.builder().title(title).build();
-        Story story = Story.builder().title(title).build();
-        given(storyRepository.findById(id)).willReturn(Optional.of(Story.builder().build()));
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        StoryDto storyDto = StoryDto.builder().title(title).updatedAt(now.getTime()).build();
+        Story story = Story.builder().title(title).updatedAt(now).build();
+        given(storyRepository.findById(id)).willReturn(
+                Optional.of(Story.builder().updatedAt(now).build()));
         given(storyMapper.storyDtoToStory(storyDto)).willReturn(story);
 
         Long actualId = storyService.update(id, storyDto);
@@ -189,9 +192,26 @@ public class StoryServiceTest {
     @DisplayName("Update story not exist")
     public void whenUpdateNotExistedStoryThenThrowNoSuchStoryException() {
         StoryDto storyDto = StoryDto.builder().title(title).build();
-        given(storyRepository.existsById(id)).willReturn(false);
 
         assertThrows(NoSuchStoryException.class,
+                () -> storyService.update(id, storyDto), "");
+
+        verify(storyMapper, never()).storyDtoToStory(any());
+    }
+
+    @Test
+    @DisplayName("Update story concurrent update exception")
+    public void whenUpdateNotExistedStoryThenThrowConcurrentUpdateException() {
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        StoryDto storyDto = StoryDto.builder().title(title).updatedAt(now.getTime()).build();
+        Story story = Story.builder().title(title).updatedAt(now).build();
+        given(storyRepository.findById(id)).willReturn(
+                Optional.of(Story.builder()
+                        .updatedAt(new Timestamp(System.currentTimeMillis()))
+                        .build()));
+        given(storyMapper.storyDtoToStory(storyDto)).willReturn(story);
+
+        assertThrows(ConcurrentUpdatedException.class,
                 () -> storyService.update(id, storyDto), "");
 
         verify(storyMapper, never()).storyDtoToStory(any());

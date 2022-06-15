@@ -13,6 +13,7 @@ import com.openhelp.story.repository.filter.StoryFilter;
 import com.openhelp.story.utils.SecurityUtils;
 import com.openhelp.story.utils.Utils;
 import com.openhelp.story.validation.AccessDeniedException;
+import com.openhelp.story.validation.ConcurrentUpdatedException;
 import com.openhelp.story.validation.NoSuchStoryException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -95,6 +96,9 @@ public class StoryServiceImpl implements StoryService {
     @Transactional
     public Long update(@NotNull Long id, @NotNull StoryDto dto) {
         Story story = storyRepository.findById(id).orElseThrow(NoSuchStoryException::new);
+        if (!story.getUpdatedAt().equals(new Timestamp(dto.getUpdatedAt()))) {
+            throw new ConcurrentUpdatedException();
+        }
         boolean isOwn = SecurityUtils.getUserAccess().getUserId().equals(story.getUserId());
         boolean isUpdateOwnStory = SecurityUtils.is(OperationType.UPDATE_OWN, EntityType.STORY);
         boolean isUpdateAnyStory = SecurityUtils.is(OperationType.UPDATE_ANY, EntityType.STORY);
