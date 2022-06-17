@@ -56,7 +56,4 @@ public class TaskFilterDto extends FilterDto {
 
     @JsonProperty("executorId")
     private Long executorId;
-
-    @JsonProperty("storyId")
-    private Long storyId;
 }

@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openhelp.story.enums.EntityType;
 import com.openhelp.story.enums.OperationType;
+import com.openhelp.story.validation.AccessDeniedException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,6 +24,33 @@ import java.util.Objects;
  * @author Pavel Ravvich.
  */
 public class SecurityUtils {
+
+    public static void checkReadAccess(@NotNull Long authorId, @NotNull EntityType entity) {
+        boolean isOwn = authorId.equals(SecurityUtils.getUserAccess().getUserId());
+        boolean isReadOwn = SecurityUtils.is(OperationType.READ_OWN, entity);
+        boolean isReadAny = SecurityUtils.is(OperationType.READ_ANY, entity);
+        if (!isReadAny && !(isOwn && isReadOwn)) {
+            throw new AccessDeniedException();
+        }
+    }
+
+    public static void checkUpdateAccess(@NotNull Long authorId, @NotNull EntityType entity) {
+        boolean isOwn = authorId.equals(SecurityUtils.getUserAccess().getUserId());
+        boolean isUpdateAny = SecurityUtils.is(OperationType.UPDATE_ANY, entity);
+        boolean isUpdateOwn = SecurityUtils.is(OperationType.UPDATE_OWN, entity);
+        if (!isUpdateAny && !(isOwn && isUpdateOwn)) {
+            throw new AccessDeniedException();
+        }
+    }
+
+    public static void checkDeleteAccess(@NotNull Long authorId, @NotNull EntityType entity) {
+        boolean isOwn = authorId.equals(SecurityUtils.getUserAccess().getUserId());
+        boolean isDeleteAny = SecurityUtils.is(OperationType.DELETE_ANY, entity);
+        boolean isDeleteOwn = SecurityUtils.is(OperationType.DELETE_OWN, entity);
+        if (!isDeleteAny && !(isOwn && isDeleteOwn)) {
+            throw new AccessDeniedException();
+        }
+    }
 
     public static boolean is(OperationType operation, EntityType entity) {
         if (Objects.isNull(entity) || Objects.isNull(operation)) {

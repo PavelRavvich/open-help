@@ -9,13 +9,13 @@ import com.openhelp.story.dto.task.TaskFilterDto;
  */
 public interface TaskService {
 
-    ListDto<TaskDto> getList(TaskFilterDto filter);
+    ListDto<TaskDto> getList(Long storyId, TaskFilterDto filter);
 
-    TaskDto findById(Long id);
+    TaskDto findById(Long storyId, Long taskId);
 
-    Long create(TaskDto story);
+    Long create(Long storyId, TaskDto story);
 
-    Long update(Long id, TaskDto storyDto);
+    Long update(Long storyId, Long taskId, TaskDto storyDto);
 
-    Long delete(Long id);
+    Long delete(Long storyId, Long taskId);
 }

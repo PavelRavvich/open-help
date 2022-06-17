@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 
 /**
  * @author Pavel Ravvich.
@@ -19,12 +21,14 @@ public class TaskDto {
     @JsonProperty("id")
     private Long id;
 
+    @NotNull(message = "title required")
     @JsonProperty("title")
     private String title;
 
     @JsonProperty("status")
     private String status;
 
+    @NotNull(message = "description required")
     @JsonProperty("description")
     private String description;
 
@@ -46,6 +50,7 @@ public class TaskDto {
     @JsonProperty("executorId")
     private Long executorId;
 
+    @NotNull(message = "storyId required")
     @JsonProperty("storyId")
     private Long storyId;
 }

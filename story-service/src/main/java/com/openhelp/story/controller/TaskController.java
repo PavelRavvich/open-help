@@ -8,8 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,34 +28,39 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping("/task")
-    public ResponseEntity<ListDto<TaskDto>> list(@NotNull @RequestBody @Valid TaskFilterDto filter) {
+    @GetMapping("/{storyId}/tasks")
+    public ResponseEntity<ListDto<TaskDto>> list(@NotNull @PathVariable(name = "storyId") Long storyId,
+                                                 @NotNull @RequestBody @Valid TaskFilterDto filter) {
         log.debug("Get task list by filter: {}", filter);
-        return ResponseEntity.ok(taskService.getList(filter));
+        return ResponseEntity.ok(taskService.getList(storyId, filter));
     }
 
-    @PostMapping("/task/{id}")
-    public ResponseEntity<TaskDto> get(@NotNull @PathVariable(name = "id") Long taskId) {
+    @GetMapping("/{storyId}/tasks/{taskId}")
+    public ResponseEntity<TaskDto> get(@NotNull @PathVariable(name = "storyId") Long storyId,
+                                       @NotNull @PathVariable(name = "taskId") Long taskId) {
         log.debug("Get task by id: {}", taskId);
-        return ResponseEntity.ok(taskService.findById(taskId));
+        return ResponseEntity.ok(taskService.findById(storyId, taskId));
     }
 
-    @PostMapping("/task/create")
-    public ResponseEntity<Long> create(@NotNull @RequestBody @Valid TaskDto task) {
+    @PostMapping("/{storyId}/tasks")
+    public ResponseEntity<Long> create(@NotNull @PathVariable(name = "storyId") Long storyId,
+                                       @NotNull @RequestBody @Valid TaskDto task) {
         log.debug("Create task: {}", task);
-        return ResponseEntity.ok(taskService.create(task));
+        return ResponseEntity.ok(taskService.create(storyId, task));
     }
 
-    @PostMapping("/task/{id}/update")
-    public ResponseEntity<Long> create(@NotNull @PathVariable(name = "id") Long taskId,
+    @PutMapping("/{storyId}/tasks/{taskId}")
+    public ResponseEntity<Long> create(@NotNull @PathVariable(name = "storyId") Long storyId,
+                                       @NotNull @PathVariable(name = "taskId") Long taskId,
                                        @NotNull @RequestBody @Valid TaskDto task) {
         log.debug("Update task id: {}, {}", taskId, task);
-        return ResponseEntity.ok(taskService.update(taskId, task));
+        return ResponseEntity.ok(taskService.update(storyId, taskId, task));
     }
 
-    @PostMapping("/task/{id}/delete")
-    public ResponseEntity<Long> delete(@NotNull @PathVariable(name = "id") Long taskId) {
+    @DeleteMapping("/{storyId}/tasks/{taskId}")
+    public ResponseEntity<Long> delete(@NotNull @PathVariable(name = "storyId") Long storyId,
+                                       @NotNull @PathVariable(name = "taskId") Long taskId) {
         log.debug("Delete task id: {}", taskId);
-        return ResponseEntity.ok(taskService.delete(taskId));
+        return ResponseEntity.ok(taskService.delete(storyId, taskId));
     }
 }

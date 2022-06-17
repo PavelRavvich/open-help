@@ -1,5 +1,6 @@
 package com.openhelp.story.repository;
 
+import com.openhelp.story.model.Story;
 import com.openhelp.story.model.Task;
 import com.openhelp.story.repository.filter.TaskFilter;
 import com.openhelp.story.utils.Utils;
@@ -18,6 +19,7 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Pavel Ravvich.
@@ -29,6 +31,10 @@ public interface TaskRepository
 
     @Query("UPDATE Task t SET t.deletedAt = :deletedAt WHERE t.id = :id")
     void updateDeletedAtById(@NotNull Long id, @NotNull Timestamp deletedAt);
+
+    Optional<Task> findByIdAndStory(@NotNull Long id, @NotNull Story story);
+
+    boolean existsByIdAndStory(@NotNull Long id, @NotNull Story story);
 
     record TaskSpecification(@NotNull TaskFilter filter) implements Specification<Task> {
 

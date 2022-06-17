@@ -23,5 +23,5 @@ public interface TaskMapper {
     Task taskDtoToTask(TaskDto dto);
 
     @Mapping(target = "story.id", source = "storyId")
-    TaskFilter taskFilterToTaskFilterDto(TaskFilterDto dto);
+    TaskFilter taskFilterToTaskFilterDto(Long storyId, TaskFilterDto dto);
 }
