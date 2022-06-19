@@ -24,8 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static com.openhelp.story.repository.TaskRepository.TaskSpecification;
 
@@ -46,7 +44,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public ListDto<TaskDto> getList(@NotNull Long storyId, @NotNull TaskFilterDto filterDto) {
         Pageable pageable = PageRequest.of(filterDto.getPageNumber(), filterDto.getPageSize());
-        TaskFilter filter = secure(taskMapper.taskFilterToTaskFilterDto(storyId, filterDto));
+        TaskFilter filter = checkAccess(taskMapper.taskFilterToTaskFilterDto(storyId, filterDto));
         Page<Task> page = taskRepository.findAll(
                 new TaskSpecification(filter), pageable);
         List<TaskDto> items = page
@@ -59,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
                 .build();
     }
 
-    private TaskFilter secure(@NotNull TaskFilter filter) {
+    private TaskFilter checkAccess(@NotNull TaskFilter filter) {
         boolean isReadAny = SecurityUtils.is(OperationType.READ_ANY, EntityType.STORY);
         boolean isReadOwn = SecurityUtils.is(OperationType.READ_OWN, EntityType.STORY);
         if (!isReadAny && isReadOwn) {
