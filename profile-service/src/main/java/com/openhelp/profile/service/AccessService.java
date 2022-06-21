@@ -1,6 +1,6 @@
 package com.openhelp.profile.service;
 
-import com.openhelp.profile.dto.access.UserAccessDto;
+import com.openhelp.profile.utils.SecurityUtils.UserAccessDto;
 
 /**
  * @author Pavel Ravvich.

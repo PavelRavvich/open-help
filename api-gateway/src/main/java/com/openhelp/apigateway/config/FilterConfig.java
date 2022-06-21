@@ -33,7 +33,7 @@ public class FilterConfig {
     private final static String ACCESS_URL = "http://profile/accesses";
 
     private final Set<String> unauthorizedUrlPatterns =
-            Set.of("login", "health", "checkToken", "registration", "users", "roles");
+            Set.of("/login", "/health", "/checkToken", "/registration");
 
     @Bean
     @LoadBalanced

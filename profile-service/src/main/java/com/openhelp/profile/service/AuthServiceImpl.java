@@ -10,6 +10,7 @@ import com.openhelp.profile.enums.RoleType;
 import com.openhelp.profile.mapper.AuthMapper;
 import com.openhelp.profile.model.User;
 import com.openhelp.profile.utils.SecurityUtils;
+import com.openhelp.profile.validation.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -17,9 +18,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -71,7 +75,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponseDto checkToken(@NotNull String token) {
         String accessToken = token.replace("Bearer ", "");
-        User user = SecurityUtils.getSecurityContextUser();
+        Authentication auth = Optional
+                .ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .orElseThrow(AccessDeniedException::new);
+        User user = ((JwtUser) auth.getPrincipal()).getUser();
         return authMapper.toAuthResponseDto(accessToken, user);
     }
 }

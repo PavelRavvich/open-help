@@ -1,12 +1,14 @@
 package com.openhelp.profile.controller;
 
-import com.openhelp.profile.dto.access.UserAccessDto;
 import com.openhelp.profile.service.AccessService;
+import com.openhelp.profile.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.openhelp.profile.utils.SecurityUtils.UserAccessDto;
 
 /**
  * @author Pavel Ravvich.

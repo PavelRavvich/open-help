@@ -2,7 +2,7 @@ package com.openhelp.profile.dto.role;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.openhelp.profile.dto.access.AccessDto;
+import com.openhelp.profile.utils.SecurityUtils.AccessDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,23 +1,28 @@
 package com.openhelp.profile.service;
 
-import com.openhelp.profile.dto.access.UserAccessDto;
+import com.openhelp.profile.config.jwt.JwtUser;
 import com.openhelp.profile.mapper.AccessMapper;
 import com.openhelp.profile.model.Access;
 import com.openhelp.profile.model.User;
-import com.openhelp.profile.utils.SecurityUtils;
+import com.openhelp.profile.validation.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static com.openhelp.profile.utils.SecurityUtils.UserAccessDto;
 
 /**
  * @author Pavel Ravvich.
@@ -31,9 +36,11 @@ public class AccessServiceImpl implements AccessService {
 
     @Override
     public UserAccessDto getAccesses() {
-        User user = SecurityUtils.getSecurityContextUser();
-        List<Access> accesses = user.getRoles()
-                .stream()
+        Authentication auth = Optional
+                .ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .orElseThrow(AccessDeniedException::new);
+        User user = ((JwtUser) auth.getPrincipal()).getUser();
+        List<Access> accesses = user.getRoles().stream()
                 .flatMap(role -> role.getAccesses().stream())
                 .filter(distinctByKeys(Access::getOperationType, Access::getEntityType))
                 .collect(Collectors.toList());

@@ -5,6 +5,8 @@ import com.openhelp.profile.dto.auth.SignUpRequestDto;
 import com.openhelp.profile.dto.user.UserDto;
 import com.openhelp.profile.dto.user.UserFilterDto;
 import com.openhelp.profile.dto.user.UserItemDto;
+import com.openhelp.profile.enums.EntityType;
+import com.openhelp.profile.enums.OperationType;
 import com.openhelp.profile.enums.RoleType;
 import com.openhelp.profile.mapper.AuthMapper;
 import com.openhelp.profile.mapper.UserMapper;
@@ -29,8 +31,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.openhelp.profile.repository.UserRepository.UserSpecification;
-import static com.openhelp.profile.utils.SecurityUtils.anyMatchCredentials;
-import static com.openhelp.profile.utils.SecurityUtils.getSecurityContextUserId;
 
 /**
  * @author Pavel Ravvich.
@@ -104,6 +104,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ListDto<UserItemDto> list(@NotNull UserFilterDto filterDto) {
+        if (SecurityUtils.is(OperationType.READ_ANY, EntityType.USER)) {
+            throw new AccessDeniedException();
+        }
         UserFilter filter = userMapper.toUserFilter(filterDto);
         Pageable pagination = PageRequest.of(filterDto.getPageNumber(),
                 filterDto.getPageSize(), Utils.getSort(filterDto));
@@ -118,8 +121,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findById(@NotNull Long userId) {
-        if (!SecurityUtils.anyMatchCredentials(RoleType.ADMIN)
-                && !getSecurityContextUserId().equals(userId)) {
+        if (!SecurityUtils.is(OperationType.READ_ANY, EntityType.USER)
+                && !SecurityUtils.getUserAccess().getUserId().equals(userId)) {
             throw new AccessDeniedException();
         }
         User user = userRepository.findDistinctById(userId).orElseThrow();
@@ -130,25 +133,25 @@ public class UserServiceImpl implements UserService {
     public Long updatePassword(@NotNull Long userId,
                                @NotNull String oldPassword,
                                @NotNull String newPassword) {
-        if (!SecurityUtils.getSecurityContextUserId().equals(userId)
-                && !SecurityUtils.anyMatchCredentials(RoleType.ADMIN)) {
+        if (!SecurityUtils.is(OperationType.UPDATE_ANY, EntityType.USER)
+                && !SecurityUtils.getUserAccess().getUserId().equals(userId)) {
             throw new AccessDeniedException();
         }
-
-        User user = userRepository.findDistinctById(userId).orElseThrow(NoSuchElementException::new);
+        User user = userRepository
+                .findDistinctById(userId)
+                .orElseThrow(NoSuchElementException::new);
         if (passwordEncoder.matches(oldPassword, user.getPassword())) {
             userRepository.updatePasswordById(userId, passwordEncoder.encode(newPassword));
         } else {
             throw new PasswordChangeException();
         }
-
         return userId;
     }
 
     @Override
     public Long updateNickname(@NotNull Long userId, @NotNull String nickname) {
-        if (!userId.equals(getSecurityContextUserId())
-                && !anyMatchCredentials(RoleType.ADMIN)) {
+        if (!SecurityUtils.is(OperationType.UPDATE_ANY, EntityType.USER)
+                && !SecurityUtils.getUserAccess().getUserId().equals(userId)) {
             throw new AccessDeniedException();
         }
         userRepository.updateNicknameById(userId, nickname);
@@ -157,6 +160,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long delete(@NotNull Long userId) {
+        if (!SecurityUtils.is(OperationType.DELETE_ANY, EntityType.USER)
+                && !SecurityUtils.getUserAccess().getUserId().equals(userId)) {
+            throw new AccessDeniedException();
+        }
         userRepository.deleteById(userId);
         return userId;
     }
