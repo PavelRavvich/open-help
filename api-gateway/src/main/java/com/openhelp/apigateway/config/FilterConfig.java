@@ -2,6 +2,7 @@ package com.openhelp.apigateway.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openhelp.apigateway.dto.UserAccessDto;
+import com.openhelp.apigateway.validation.BadRequestException;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -89,9 +90,7 @@ public class FilterConfig {
                 .getHeaders()
                 .get(headerName);
         if (Objects.isNull(headers) || headers.isEmpty()) {
-            throw new RuntimeException(
-                    String.format("Bad request header %s required", headerName)
-            );
+            throw new BadRequestException(headerName);
         }
         return headers.get(0);
     }
