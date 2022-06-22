@@ -5,6 +5,7 @@ import com.openhelp.apigateway.dto.UserAccessDto;
 import com.openhelp.apigateway.validation.BadRequestException;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -17,7 +18,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -33,8 +33,8 @@ public class FilterConfig {
 
     private final static String ACCESS_URL = "http://profile/accesses";
 
-    private final Set<String> unauthorizedUrlPatterns =
-            Set.of("/login", "/health", "/checkToken", "/registration");
+    @Value("${endpoint.patterns.permitAll}")
+    private String[] permitAllPatterns;
 
     @Bean
     @LoadBalanced
@@ -46,7 +46,7 @@ public class FilterConfig {
     public GlobalFilter authFilter() {
         return (exchange, chain) -> {
             String path = exchange.getRequest().getURI().getPath();
-            for (String pattern : unauthorizedUrlPatterns) {
+            for (String pattern : permitAllPatterns) {
                 if (path.contains(pattern)) {
                     return chain.filter(exchange);
                 }

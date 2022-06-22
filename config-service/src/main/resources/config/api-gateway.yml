@@ -1,6 +1,14 @@
 server:
   port: 8765
 
+endpoint:
+  patterns:
+    permitAll: >
+      /login,
+      /checkToken,
+      /registration,
+      /health
+
 management:
   endpoints:
     web:
