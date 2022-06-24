@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ListDto<UserItemDto> list(@NotNull UserFilterDto filterDto) {
-        if (SecurityUtils.is(OperationType.READ_ANY, EntityType.USER)) {
+        if (!SecurityUtils.is(OperationType.READ_ANY, EntityType.USER)) {
             throw new AccessDeniedException();
         }
         UserFilter filter = userMapper.toUserFilter(filterDto);
