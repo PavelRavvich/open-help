@@ -24,7 +24,6 @@ public class UserItemDto {
     @JsonProperty("id")
     private Long id;
 
-    @NotNull(message = "Обязательный параметр")
     @JsonProperty("username")
     private String username;
 
