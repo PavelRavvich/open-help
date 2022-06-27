@@ -40,20 +40,20 @@ public class StoryController {
         return ResponseEntity.ok(storyService.findById(storyId));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Long> create(@NotNull @RequestBody @Valid StoryDto story) {
         log.debug("Create Story: {}", story);
         return ResponseEntity.ok(storyService.create(story));
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/{id}")
     public ResponseEntity<Long> update(@NotNull @PathVariable(name = "id") Long id,
                                        @NotNull @RequestBody @Valid StoryDto story) {
         log.debug("Update story id: {}, {}", id, story);
         return ResponseEntity.ok(storyService.update(id, story));
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@NotNull @PathVariable(name = "id") Long id) {
         log.debug("Delete Story by id: {}", id);
         return ResponseEntity.ok(storyService.delete(id));

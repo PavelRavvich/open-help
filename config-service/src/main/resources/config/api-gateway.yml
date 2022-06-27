@@ -42,13 +42,13 @@ spring:
             - Path=/api/v1/sos/**
           uri: lb://sos
         - predicates:
-            - Path=/api/v1/story/**
+            - Path=/api/v1/stories/**
           uri: lb://story
         - predicates:
-            - Path=/api/v1/group/**
+            - Path=/api/v1/groups/**
           uri: lb://group
         - predicates:
-            - Path=/api/v1/message/**
+            - Path=/api/v1/messages/**
           uri: lb://message
         - predicates:
             - Path=/api/v1/notification/**
