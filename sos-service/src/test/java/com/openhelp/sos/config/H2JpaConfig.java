@@ -1,6 +1,7 @@
 package com.openhelp.sos.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -57,8 +58,8 @@ public class H2JpaConfig {
         return transactionManager;
     }
 
-//    @Bean
-//    public FlywayMigrationStrategy flywayMigrationStrategy() {
-//        return flyway -> { /* do nothing*/ };
-//    }
+    @Bean
+    public FlywayMigrationStrategy flywayMigrationStrategy() {
+        return flyway -> { /* do nothing*/ };
+    }
 }

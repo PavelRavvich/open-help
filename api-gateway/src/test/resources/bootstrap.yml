@@ -1,3 +1,8 @@
 eureka:
   client:
     enabled: false
+
+endpoint:
+  patterns:
+    permitAll: >
+      test
