@@ -3,5 +3,5 @@ package com.openhelp.story.validation;
 /**
  * @author Pavel Ravvich.
  */
-public class ConcurrentUpdatedException extends RuntimeException {
+public class ConcurrentUpdateException extends RuntimeException {
 }

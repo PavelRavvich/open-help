@@ -13,7 +13,7 @@ import com.openhelp.story.repository.StoryRepository;
 import com.openhelp.story.repository.filter.StoryFilter;
 import com.openhelp.story.utils.SecurityUtils.AccessDto;
 import com.openhelp.story.utils.SecurityUtils.UserAccessDto;
-import com.openhelp.story.validation.ConcurrentUpdatedException;
+import com.openhelp.story.validation.ConcurrentUpdateException;
 import com.openhelp.story.validation.NoSuchStoryException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -211,7 +211,7 @@ public class StoryServiceTest {
                         .build()));
         given(storyMapper.storyDtoToStory(storyDto)).willReturn(story);
 
-        assertThrows(ConcurrentUpdatedException.class,
+        assertThrows(ConcurrentUpdateException.class,
                 () -> storyService.update(id, storyDto), "");
 
         verify(storyMapper, never()).storyDtoToStory(any());
