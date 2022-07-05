@@ -45,6 +45,9 @@ public class Membership {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
+    @Column(name = "deleted_at")
+    private Timestamp deletedAt;
+
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")

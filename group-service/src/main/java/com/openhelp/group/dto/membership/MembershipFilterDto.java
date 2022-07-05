@@ -38,4 +38,10 @@ public class MembershipFilterDto extends FilterDto {
 
     @JsonProperty("updatedTo")
     private Long updatedTo;
+
+    @JsonProperty("deletedFrom")
+    private Long deletedFrom;
+
+    @JsonProperty("deletedTo")
+    private Long deletedTo;
 }

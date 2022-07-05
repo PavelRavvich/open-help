@@ -1,11 +1,13 @@
 package com.openhelp.group.repository.filter;
 
+import com.openhelp.group.model.Group;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -29,12 +31,18 @@ public class MembershipFilter {
 
     private Timestamp updatedTo;
 
+    private Timestamp deletedFrom;
+
+    private Timestamp deletedTo;
+
     public Optional<Long> getUserId() {
         return Optional.ofNullable(userId);
     }
 
-    public Optional<Long> getGroupId() {
-        return Optional.ofNullable(groupId);
+    public Optional<Group> getGroup() {
+        return Objects.nonNull(groupId)
+                ? Optional.of(Group.builder().id(groupId).build())
+                : Optional.empty();
     }
 
     public Optional<Timestamp> getCreatedFrom() {
@@ -51,5 +59,13 @@ public class MembershipFilter {
 
     public Optional<Timestamp> getUpdatedTo() {
         return Optional.ofNullable(updatedTo);
+    }
+
+    public Optional<Timestamp> getDeletedFrom() {
+        return Optional.ofNullable(deletedFrom);
+    }
+
+    public Optional<Timestamp> getDeletedTo() {
+        return Optional.ofNullable(deletedTo);
     }
 }

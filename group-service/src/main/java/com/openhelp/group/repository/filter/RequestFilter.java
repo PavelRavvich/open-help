@@ -1,12 +1,14 @@
 package com.openhelp.group.repository.filter;
 
 import com.openhelp.group.enums.StatusType;
+import com.openhelp.group.model.Group;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -24,9 +26,9 @@ public class RequestFilter {
 
     private String description;
 
-    private Timestamp userId;
+    private Long userId;
 
-    private Timestamp groupId;
+    private Long groupId;
 
     private Timestamp createdFrom;
 
@@ -48,12 +50,14 @@ public class RequestFilter {
         return Optional.ofNullable(description);
     }
 
-    public Optional<Timestamp> getUserId() {
+    public Optional<Long> getUserId() {
         return Optional.ofNullable(userId);
     }
 
-    public Optional<Timestamp> getGroupId() {
-        return Optional.ofNullable(groupId);
+    public Optional<Group> getGroup() {
+        return Objects.nonNull(groupId)
+                ? Optional.of(Group.builder().id(groupId).build())
+                : Optional.empty();
     }
 
     public Optional<Timestamp> getCreatedFrom() {

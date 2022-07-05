@@ -28,4 +28,7 @@ public class MembershipDto {
 
     @JsonProperty("updatedAt")
     private Long updatedAt;
+
+    @JsonProperty("deletedAt")
+    private Long deletedAt;
 }
